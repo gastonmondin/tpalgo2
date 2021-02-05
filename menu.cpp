@@ -171,6 +171,7 @@ void Menu::limpiarPantalla() {
 void Menu::mostrarMenu() {
 	int opcion;
 	do {
+		tablero.mostrar();
 		cout << "----MENU DE OPCIONES----" << endl;
 		cout << "1. Agregar un nuevo personaje." << endl;
 		cout << "2. Eliminar un personaje." << endl;

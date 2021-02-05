@@ -2,6 +2,7 @@
 #define MENU_H
 
 #include "lista.h"
+#include "tablero.h"
 
 using namespace std;
 
@@ -10,6 +11,7 @@ class Menu {
 	
 	private:
 		Lista listaPersonajes = Lista();
+		Tablero tablero = Tablero();
 
 	// Metodos
 
