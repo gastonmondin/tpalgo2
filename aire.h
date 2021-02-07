@@ -7,8 +7,7 @@ class Aire : public Personaje {
 	private:
 		string elemento;
 	public:
-		Aire(string, int, int);
-		Aire(Personaje *p);
+		Aire(string, int, int, int);
 		string obtenerElemento();
 		bool alimentar();
 };

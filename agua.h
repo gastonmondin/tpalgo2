@@ -9,8 +9,7 @@ class Agua : public Personaje {
 		string alimento;
 		int vecesAlimentado;
 	public:
-		Agua(string, int, int);
-		Agua(Personaje *p);
+		Agua(string, int, int, int);
 		string obtenerElemento();
 		string obtenerAlimento();
 		bool alimentar();

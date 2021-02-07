@@ -8,8 +8,7 @@ class Tierra : public Personaje {
 		string elemento;
 		string alimento;
 	public:
-		Tierra(string, int, int);
-		Tierra(Personaje *p);
+		Tierra(string, int, int, int);
 		string obtenerElemento();
 		string obtenerAlimento();
 		bool alimentar();

@@ -1,14 +1,10 @@
 #include "fuego.h"
 
-Fuego::Fuego(string nombre, int escudo, int vida) : Personaje(nombre, escudo, vida) {
+Fuego::Fuego(string nombre, int escudo, int vida, int energia) : Personaje(nombre, escudo, vida, energia) {
 	elemento = "Fuego";
 	alimento = "Madera";
 }
 
-Fuego::Fuego(Personaje *p) : Personaje(p){
-	elemento = "Fuego";
-	alimento = "Madera";
-}
 string Fuego::obtenerElemento() {
 	return elemento;
 }

@@ -1,10 +1,6 @@
 #include "aire.h"
 
-Aire::Aire(string nombre, int escudo, int vida) : Personaje(nombre, escudo, vida) {
-	elemento = "Aire";
-}
-
-Aire::Aire(Personaje *p) : Personaje(p){
+Aire::Aire(string nombre, int escudo, int vida, int energia) : Personaje(nombre, escudo, vida, energia) {
 	elemento = "Aire";
 }
 

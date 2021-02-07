@@ -1,82 +1,129 @@
 #include "tablero.h"
 
 Tablero::Tablero() {
-	/*for (int i = 0; i < 8; i++){
-		for (int j = 0; j < 8; j++){
-			dimensiones[i][j] = ' ';
-		}
-	}*/
-	agregarLago();
-	agregarVolcan();
-	agregarPrecipicio();
-	agregarMontana();
-	agregarCamino();
-	agregarVacio();
+	agregarPrimeraFila();
+	agregarSegundaFila();
+	agregarTerceraFila();
+	agregarCuartaFila();
+	agregarQuintaFila();
+	agregarSextaFila();
+	agregarSeptimaFila();
+	agregarOctavaFila();
 }
 
 void Tablero::mostrar(){
-	std::cout << " _____ _____ _____ _____ _____ _____ _____ _____\n";
+	std::cout << "      ";
+	for (int i = 1; i <= 8; i++)
+		std::cout << i << "     ";
+	std::cout << endl << "    _____ _____ _____ _____ _____ _____ _____ _____" << endl;
 	for (int i = 0; i < 8; i++){
-		std::cout << "|     |     |     |     |     |     |     |     |\n";
-		std::cout << "|  ";
+		std::cout << "   |     |     |     |     |     |     |     |     |" << endl;
+		std::cout << " " << i+1 << " |  ";
 		for (int j = 0; j < 8; j++){
-			std::cout << dimensiones[i][j] << "  |  ";
+			std::cout << casilleros[i][j].obtenerSimbolo() << "  |  ";
 		}
-		std::cout << "\n";
-		std::cout << "|_____|_____|_____|_____|_____|_____|_____|_____|\n";
+		std::cout << endl << "   |_____|_____|_____|_____|_____|_____|_____|_____|" << endl;
 	}
 }
 
-void Tablero::agregarLago(){
-	dimensiones[0][0] = dimensiones[0][1] = 'L';
-	dimensiones[1][0] = dimensiones[1][1] = 'L';
-	dimensiones[3][4] = dimensiones[6][5] = 'L';
-	dimensiones[6][6] = dimensiones[6][7] = 'L';
-	dimensiones[7][5] = dimensiones[7][6] = 'L';
-	dimensiones[7][7] = 'L';
+void Tablero::agregarPrimeraFila() {
+	casilleros[0][0] = Lago();
+	casilleros[0][1] = Lago();
+	casilleros[0][2] = Precipicio();
+	casilleros[0][3] = Precipicio();
+	casilleros[0][4] = Precipicio();
+	casilleros[0][5] = Vacio();
+	casilleros[0][6] = Volcan();
+	casilleros[0][7] = Volcan();
 }
 
-void Tablero::agregarVolcan(){
-	dimensiones[0][6] = dimensiones[0][7] = 'V';
-	dimensiones[1][4] = dimensiones[1][5] = 'V';
-	dimensiones[1][6] = dimensiones[1][7] = 'V';
-	dimensiones[2][1] = dimensiones[2][2] = 'V';
-	dimensiones[2][3] = dimensiones[2][4] = 'V';
-	dimensiones[3][0] = 'V';
+void Tablero::agregarSegundaFila() {
+	casilleros[1][0] = Lago();
+	casilleros[1][1] = Lago();
+	casilleros[1][2] = Precipicio();
+	casilleros[1][3] = Vacio();
+	casilleros[1][4] = Volcan();
+	casilleros[1][5] = Volcan();
+	casilleros[1][6] = Volcan();
+	casilleros[1][7] = Volcan();
 }
 
-void Tablero::agregarPrecipicio(){
-	dimensiones[0][2] = dimensiones[0][3] = 'P';
-	dimensiones[0][4] = dimensiones[1][2] = 'P';
-	dimensiones[2][0] = dimensiones[2][5] = 'P';
-	dimensiones[2][6] = dimensiones[2][7] = 'P';
-	dimensiones[4][7] = dimensiones[5][7] = 'P';
-	dimensiones[6][0] = dimensiones[7][0] = 'P';
-	dimensiones[7][1] = dimensiones[7][3] = 'P';
+void Tablero::agregarTerceraFila() {
+	casilleros[2][0] = Precipicio();
+	casilleros[2][1] = Volcan();
+	casilleros[2][2] = Volcan();
+	casilleros[2][3] = Volcan();
+	casilleros[2][4] = Volcan();
+	casilleros[2][5] = Precipicio();
+	casilleros[2][6] = Precipicio();
+	casilleros[2][7] = Precipicio();
 }
 
-void Tablero::agregarMontana(){
-	dimensiones[5][4] = dimensiones[5][5] = 'M';
-	dimensiones[5][6] = dimensiones[6][1] = 'M';
-	dimensiones[6][2] = dimensiones[6][3] = 'M';
-	dimensiones[6][4] = dimensiones[7][2] = 'M';
+void Tablero::agregarCuartaFila() {
+	casilleros[3][0] = Volcan();
+	casilleros[3][1] = Camino();
+	casilleros[3][2] = Camino();
+	casilleros[3][3] = Camino();
+	casilleros[3][4] = Lago();
+	casilleros[3][5] = Vacio();
+	casilleros[3][6] = Camino();
+	casilleros[3][7] = Camino();
 }
 
-void Tablero::agregarCamino(){
-	dimensiones[3][1] = dimensiones[3][2] = 'C';
-	dimensiones[3][3] = dimensiones[3][6] = 'C';
-	dimensiones[3][7] = dimensiones[4][0] = 'C';
-	dimensiones[4][1] = dimensiones[4][3] = 'C';
-	dimensiones[4][4] = dimensiones[4][5] = 'C';
-	dimensiones[4][6] = dimensiones[5][0] = 'C';
-	dimensiones[5][1] = dimensiones[5][2] = 'C';
+void Tablero::agregarQuintaFila() {
+	casilleros[4][0] = Camino();
+	casilleros[4][1] = Camino();
+	casilleros[4][2] = Vacio();
+	casilleros[4][3] = Camino();
+	casilleros[4][4] = Camino();
+	casilleros[4][5] = Camino();
+	casilleros[4][6] = Camino();
+	casilleros[4][7] = Precipicio();
 }
 
-void Tablero::agregarVacio(){
-	dimensiones[0][5] = dimensiones[1][3] = ' ';
-	dimensiones[3][5] = dimensiones[4][2] = ' ';
-	dimensiones[5][3] = dimensiones[1][3] = ' ';
-	dimensiones[7][4] = ' ';
+void Tablero::agregarSextaFila() {
+	casilleros[5][0] = Camino();
+	casilleros[5][1] = Camino();
+	casilleros[5][2] = Camino();
+	casilleros[5][3] = Vacio();
+	casilleros[5][4] = Montana();
+	casilleros[5][5] = Montana();
+	casilleros[5][6] = Montana();
+	casilleros[5][7] = Precipicio();
+}
+
+void Tablero::agregarSeptimaFila() {
+	casilleros[6][0] = Precipicio();
+	casilleros[6][1] = Montana();
+	casilleros[6][2] = Montana();
+	casilleros[6][3] = Montana();
+	casilleros[6][4] = Montana();
+	casilleros[6][5] = Lago();
+	casilleros[6][6] = Lago();
+	casilleros[6][7] = Lago();
+}
+
+void Tablero::agregarOctavaFila() {
+	casilleros[7][0] = Precipicio();
+	casilleros[7][1] = Precipicio();
+	casilleros[7][2] = Montana();
+	casilleros[7][3] = Precipicio();
+	casilleros[7][4] = Vacio();
+	casilleros[7][5] = Lago();
+	casilleros[7][6] = Lago();
+	casilleros[7][7] = Lago();
+}
+
+void Tablero::aparecerPersonaje(Personaje* p, char s, int x, int y){
+	casilleros[y-1][x-1].asignarSimbolo(s);
+	casilleros[y-1][x-1].asignarPersonaje(p);
+}
+
+bool Tablero::casilleroDisponible(int x, int y){
+	if (casilleros[y-1][x-1].obtenerPersonaje() == 0 && casilleros[y-1][x-1].obtenerTipo() != "Vacio")
+		return true;
+	else
+		return false;
 }
 
 Tablero::~Tablero(){

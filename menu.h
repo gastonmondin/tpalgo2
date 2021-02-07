@@ -13,8 +13,7 @@ class Menu {
 	private:
 		Lista listaPersonajes = Lista();
 		Abb_raiz arbol = Abb_raiz();
-		Lista equipo_1 = Lista();
-		Lista equipo_2 = Lista();
+		Lista equipos[2];
 		Tablero tablero = Tablero();
 
 	// Metodos
@@ -74,6 +73,10 @@ class Menu {
 
 		// VERIFICA QUE SE INGRESE UN PERSONAJE EN EQUIPO 1 O EQUIPO 2.
 		void verificar_equipo(int &equipo);
+		
+		void seleccionarPosicion();
+		
+		void autocompletarEquipo();
 	public:
 		Menu();
 		

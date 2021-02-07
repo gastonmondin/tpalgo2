@@ -1,12 +1,6 @@
 #include "agua.h"
 
-Agua::Agua(string nombre, int escudo, int vida) : Personaje(nombre, escudo, vida) {
-	vecesAlimentado = 0;
-	elemento = "Agua";
-	alimento = "Plancton";
-}
-
-Agua::Agua(Personaje *p) : Personaje(p){
+Agua::Agua(string nombre, int escudo, int vida, int energia) : Personaje(nombre, escudo, vida, energia) {
 	vecesAlimentado = 0;
 	elemento = "Agua";
 	alimento = "Plancton";

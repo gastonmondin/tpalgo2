@@ -1,11 +1,6 @@
 #include "tierra.h"
 
-Tierra::Tierra(string nombre, int escudo, int vida) : Personaje(nombre, escudo, vida) {
-	elemento = "Tierra";
-	alimento = "Hierbas";
-}
-
-Tierra::Tierra(Personaje *p) : Personaje(p){
+Tierra::Tierra(string nombre, int escudo, int vida, int energia) : Personaje(nombre, escudo, vida, energia) {
 	elemento = "Tierra";
 	alimento = "Hierbas";
 }

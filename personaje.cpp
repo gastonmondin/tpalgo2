@@ -1,20 +1,20 @@
 #include "personaje.h"
 
-Personaje::Personaje(string n, int e, int v) {
+Personaje::Personaje(string n, int e, int v, int en) {
 	nombre = n;
 	escudo = e;
 	vida = v;
-	energia = rand() % 20;
+	energia = en;
 	seleccionado = false;
 }
 
-Personaje::Personaje(Personaje* p){
+/*Personaje::Personaje(Personaje* p){
 	nombre = p->nombre;
 	escudo = p->escudo;
 	vida = p->vida;
 	energia = p->energia;
 	seleccionado = p->seleccionado;
-}
+}*/
 
 string Personaje::obtenerElemento() {
 }
@@ -39,6 +39,19 @@ int Personaje::obtenerEnergia() {
 }
 
 bool Personaje::alimentar() {
+}
+
+int Personaje::obtenerPosX() {
+	return posX;
+}
+
+int Personaje::obtenerPosY() {
+	return posY;
+}
+
+void Personaje::asignarPos(int x, int y) {
+	posX = x;
+	posY = y;
 }
 
 bool Personaje::obtener_seleccionado(){

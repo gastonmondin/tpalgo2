@@ -10,21 +10,22 @@ void Menu::verificar_equipo(int &equipo){
 		cin >> equipo; cout << endl;
 	}
 }
+
 void Menu::crearPersonaje(string elemento, string nombre, int escudo, int vida) {
 	if (elemento == "Fuego") {
-		Personaje* nuevoPersonaje = new Fuego(nombre, escudo, vida);
+		Personaje* nuevoPersonaje = new Fuego(nombre, escudo, vida, rand() % 20);
 		listaPersonajes.alta(nuevoPersonaje, listaPersonajes.obtenerCantidad()+1);
 		arbol.alta(nombre, nuevoPersonaje);
 	}else if (elemento == "Agua") {
-		Personaje* nuevoPersonaje = new Agua(nombre, escudo, vida);
+		Personaje* nuevoPersonaje = new Agua(nombre, escudo, vida, rand() % 20);
 		listaPersonajes.alta(nuevoPersonaje, listaPersonajes.obtenerCantidad()+1);
 		arbol.alta(nombre, nuevoPersonaje);
 	}else if (elemento == "Tierra") {
-		Personaje* nuevoPersonaje = new Tierra(nombre, escudo, vida);
+		Personaje* nuevoPersonaje = new Tierra(nombre, escudo, vida, rand() % 20);
 		listaPersonajes.alta(nuevoPersonaje, listaPersonajes.obtenerCantidad()+1);
 		arbol.alta(nombre, nuevoPersonaje);
 	}else if (elemento == "Aire") {
-		Personaje* nuevoPersonaje = new Aire(nombre, escudo, vida);
+		Personaje* nuevoPersonaje = new Aire(nombre, escudo, vida, rand() % 20);
 		listaPersonajes.alta(nuevoPersonaje, listaPersonajes.obtenerCantidad()+1);
 		arbol.alta(nombre, nuevoPersonaje);
 	}else
@@ -119,10 +120,10 @@ void Menu::eliminarPersonaje(Personaje* personaje) {
 }
 
 void Menu::mostrarPersonajes() {
-	cout << "Lista de personajes:" << endl;
+	/*cout << "Lista de personajes:" << endl;
 
 	arbol.mostrar_datos();
-	cout << endl << endl;
+	cout << endl << endl;*/
 	cout << "Lista de personajes:" << endl;
 
 	for (int i = 1; i <= listaPersonajes.obtenerCantidad(); i++){
@@ -164,13 +165,13 @@ void Menu::alimentarPersonaje(Personaje* personaje) {
 void Menu::cargar_equipos(Personaje* p){
 	Personaje* nuevo;
 	if (p->obtenerElemento() == "Fuego") {
-		nuevo = new Fuego(p);
+		nuevo = new Fuego(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
 	}else if (p->obtenerElemento() == "Agua") {
-		nuevo = new Agua(p);
+		nuevo = new Agua(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
 	}else if (p->obtenerElemento() == "Tierra") {
-		nuevo = new Tierra(p);
+		nuevo = new Tierra(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
 	}else if (p->obtenerElemento() == "Aire")
-		nuevo = new Aire(p);
+		nuevo = new Aire(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
 
 	int equipo;
 
@@ -178,10 +179,10 @@ void Menu::cargar_equipos(Personaje* p){
 	cin >> equipo; cout << endl;
 	verificar_equipo(equipo);
 
-	if(equipo == 1 && equipo_1.obtenerCantidad() < 3)
-		equipo_1.alta(nuevo, equipo_1.obtenerCantidad() + 1);
-	else if(equipo == 2 && equipo_2.obtenerCantidad() < 3)
-		equipo_2.alta(nuevo, equipo_2.obtenerCantidad() + 1);
+	if(equipo == 1 && equipos[0].obtenerCantidad() < 3)
+		equipos[0].alta(nuevo, equipos[0].obtenerCantidad() + 1);
+	else if(equipo == 2 && equipos[1].obtenerCantidad() < 3)
+		equipos[1].alta(nuevo, equipos[1].obtenerCantidad() + 1);
 	else
 		cout << "Equipo completo." << endl;
 }
@@ -213,11 +214,39 @@ void Menu::elegir_subopcion(int opcion){
 	}
 }
 
+void Menu::seleccionarPosicion(){
+	int x, y, cont = 2;
+	int turno = rand() % 2 + 1;
+	Personaje* seleccionado;
+	limpiarPantalla();
+	tablero.mostrar();
+	do {
+		seleccionado = equipos[turno-1].consulta(cont/2);
+		cout << "Turno del jugador " << turno <<  "." << endl;
+		cout << "Elija la posicion en X de " << seleccionado->obtenerNombre() << ": ";
+		cin >> x;
+		cout << "Elija la posicion en Y de " << seleccionado->obtenerNombre() << ": ";
+		cin >> y;
+		if (tablero.casilleroDisponible(x, y)){
+			seleccionado->asignarPos(x, y);
+			tablero.aparecerPersonaje(seleccionado, turno + '0', seleccionado->obtenerPosX(), seleccionado->obtenerPosY());
+			if (turno == 1) turno++; else turno--;	
+			cont++;
+			limpiarPantalla();
+			tablero.mostrar();
+		} else{
+			limpiarPantalla();
+			tablero.mostrar();
+			cout << "El casillero elegido no esta disponible." << endl;
+		}		
+	} while (cont < 8);
+}
+
 void Menu::mostrar_submenu(){
 	int opcion;
 	bool completo = false;
 	do {
-		if(equipo_1.obtenerCantidad() == 3 && equipo_2.obtenerCantidad() == 3){
+		if(equipos[0].obtenerCantidad() == 3 && equipos[1].obtenerCantidad() == 3){
 			completo = true;
 			cout << "Equipos completos. Comenzando la partida." << endl;
 		}else{
@@ -231,6 +260,7 @@ void Menu::mostrar_submenu(){
 			elegir_subopcion(opcion);
 		}
 	} while (opcion != 4 && !completo);
+	
 
 	if(completo){
 
@@ -238,11 +268,11 @@ void Menu::mostrar_submenu(){
 
 		/*imprimo lista de equipos para corroborar*/
 		cout << "equipo 1:" << endl;
-		for (int i = 1; i <= equipo_1.obtenerCantidad(); i++)
-			cout << equipo_1.consulta(i)->obtenerNombre() << endl;
+		for (int i = 1; i <= equipos[0].obtenerCantidad(); i++)
+			cout << equipos[0].consulta(i)->obtenerNombre() << endl;
 		cout << "equipo 2:" << endl;
-		for (int i = 1; i <= equipo_2.obtenerCantidad(); i++)
-			cout << equipo_2.consulta(i)->obtenerNombre() << endl;
+		for (int i = 1; i <= equipos[1].obtenerCantidad(); i++)
+			cout << equipos[1].consulta(i)->obtenerNombre() << endl;
 	}
 }
 
@@ -275,6 +305,23 @@ void Menu::limpiarPantalla() {
 	#endif
 }
 
+void Menu::autocompletarEquipo(){
+	Personaje* p;
+	Personaje* nuevo;
+	for (int i = 0; i < 6; i++){
+		p = listaPersonajes.consulta(i+1);
+		if (p->obtenerElemento() == "Fuego") {
+			nuevo = new Fuego(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
+		}else if (p->obtenerElemento() == "Agua") {
+			nuevo = new Agua(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
+		}else if (p->obtenerElemento() == "Tierra") {
+			nuevo = new Tierra(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
+		}else if (p->obtenerElemento() == "Aire")
+			nuevo = new Aire(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
+		equipos[i/3].alta(nuevo, equipos[i/3].obtenerCantidad() + 1);
+	}
+}
+
 void Menu::mostrarMenu() {
 	int opcion;
 	do {
@@ -289,4 +336,6 @@ void Menu::mostrarMenu() {
 		cin >> opcion;
 		elegirOpcion(opcion);
 	} while (opcion != 6);
+	//autocompletarEquipo();
+	seleccionarPosicion();
 }

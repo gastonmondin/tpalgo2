@@ -4,20 +4,31 @@
 #include<iostream>
 #include<cstdlib>
 
+#include "lago.h"
+#include "volcan.h"
+#include "precipicio.h"
+#include "montana.h"
+#include "camino.h"
+#include "vacio.h"
+
 class Tablero {
 	private:
-		char dimensiones[8][8];
-		void agregarLago();
-		void agregarVolcan();
-		void agregarPrecipicio();
-		void agregarMontana();
-		void agregarCamino();
-		void agregarVacio();
+		Casillero casilleros[8][8];
+		void agregarPrimeraFila();
+		void agregarSegundaFila();
+		void agregarTerceraFila();
+		void agregarCuartaFila();
+		void agregarQuintaFila();
+		void agregarSextaFila();
+		void agregarSeptimaFila();
+		void agregarOctavaFila();
 		
 	public:
 		Tablero();
 		virtual ~Tablero();
 		void mostrar();
+		void aparecerPersonaje(Personaje*, char, int, int);
+		bool casilleroDisponible(int, int);
 };
 
 #endif

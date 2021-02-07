@@ -13,20 +13,21 @@ class Personaje {
 	
 	private:
 		string nombre;
-		int escudo;
+		int escudo, posX, posY;
 		bool seleccionado;
 	protected:
 		int vida, energia;
+	public:
 	
 	// Metodos
 	
-	public:
+	
 		
 		// Constructor
 		// POS: Crea un personaje y le asigna sus atributos.
-		Personaje(string, int, int);
+		Personaje(string, int, int, int);
 		
-		Personaje(Personaje* p);
+		//Personaje(Personaje* p);
 
 		virtual string obtenerElemento();
 		
@@ -43,6 +44,12 @@ class Personaje {
 		int obtenerVida();
 		
 		int obtenerEnergia();
+		
+		int obtenerPosX();
+		
+		int obtenerPosY();
+		
+		void asignarPos(int, int);
 
 		/*
 		 POS: RETORNA EL ATRIBUTO SELECCIONADO.
@@ -54,7 +61,7 @@ class Personaje {
 		*/
 		void elegido();
 
-		virtual ~Personaje(){};
+		virtual ~Personaje();
 };
 
 #endif

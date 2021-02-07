@@ -8,8 +8,7 @@ class Fuego : public Personaje {
 		string elemento;
 		string alimento;
 	public:
-		Fuego(string, int, int);
-		Fuego(Personaje *p);
+		Fuego(string, int, int, int);
 		string obtenerElemento();
 		string obtenerAlimento();
 		bool alimentar();
