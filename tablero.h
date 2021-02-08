@@ -27,7 +27,7 @@ class Tablero {
 		Tablero();
 		virtual ~Tablero();
 		void mostrar();
-		void aparecerPersonaje(Personaje*, char, int, int);
+		void aparecerPersonaje(Personaje*, int, int);
 		bool casilleroDisponible(int, int);
 };
 

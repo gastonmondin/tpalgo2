@@ -5,7 +5,10 @@ Casillero::Casillero(){
 }
 
 char Casillero::obtenerSimbolo() {
-	return simbolo;
+	if (personaje != 0)
+		return personaje->obtenerSimbolo();
+	else
+		return simbolo;
 }
 
 void Casillero::asignarSimbolo(char s) {

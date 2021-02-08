@@ -114,8 +114,8 @@ void Tablero::agregarOctavaFila() {
 	casilleros[7][7] = Lago();
 }
 
-void Tablero::aparecerPersonaje(Personaje* p, char s, int x, int y){
-	casilleros[y-1][x-1].asignarSimbolo(s);
+void Tablero::aparecerPersonaje(Personaje* p, int x, int y){
+	p->asignarPos(x, y);
 	casilleros[y-1][x-1].asignarPersonaje(p);
 }
 

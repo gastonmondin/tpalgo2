@@ -15,6 +15,7 @@ class Personaje {
 		string nombre;
 		int escudo, posX, posY;
 		bool seleccionado;
+		char simbolo;
 	protected:
 		int vida, energia;
 	public:
@@ -50,6 +51,10 @@ class Personaje {
 		int obtenerPosY();
 		
 		void asignarPos(int, int);
+		
+		char obtenerSimbolo();
+		
+		void asignarSimbolo(char);
 
 		/*
 		 POS: RETORNA EL ATRIBUTO SELECCIONADO.

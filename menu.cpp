@@ -228,8 +228,8 @@ void Menu::seleccionarPosicion(){
 		cout << "Elija la posicion en Y de " << seleccionado->obtenerNombre() << ": ";
 		cin >> y;
 		if (tablero.casilleroDisponible(x, y)){
-			seleccionado->asignarPos(x, y);
-			tablero.aparecerPersonaje(seleccionado, turno + '0', seleccionado->obtenerPosX(), seleccionado->obtenerPosY());
+			seleccionado->asignarSimbolo(turno + '0');
+			tablero.aparecerPersonaje(seleccionado, x, y);
 			if (turno == 1) turno++; else turno--;	
 			cont++;
 			limpiarPantalla();

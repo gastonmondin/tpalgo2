@@ -54,10 +54,22 @@ void Personaje::asignarPos(int x, int y) {
 	posY = y;
 }
 
+char Personaje::obtenerSimbolo() {
+	return simbolo;
+}
+
+void Personaje::asignarSimbolo(char s) {
+	simbolo = s;
+}
+
 bool Personaje::obtener_seleccionado(){
 	return seleccionado;
 }
 
 void Personaje::elegido(){
 	seleccionado = true;
+}
+
+Personaje::~Personaje(){
+	
 }
