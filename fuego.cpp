@@ -19,3 +19,23 @@ bool Fuego::alimentar() {
 		vida = 100;
 	return true;
 }
+
+int Fuego::atacar(string elemento){
+	energia -= 5;
+	if(elemento == "Agua")
+		return 10;
+	else if(elemento == "Aire")
+		return 30;
+	return 20;
+}
+
+bool Fuego::defenderse(){
+	if(energia > 10){
+		cout << "Energia: " << energia << " --> ";
+		energia -= 10;
+		cout << energia << '\n';
+		cout << nombre << " recupera 10 pts de vida" << endl;
+		return true;
+	}
+	return false;
+}

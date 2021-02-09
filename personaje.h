@@ -11,19 +11,19 @@ using namespace std;
 class Personaje {
 	// Atributos
 	
-	private:
+	protected:
 		string nombre;
 		int escudo, posX, posY;
 		bool seleccionado;
-		char simbolo;
-	protected:
+		string accion_1;
+		string accion_2;
 		int vida, energia;
+	private:
+		char simbolo;
 	public:
 	
 	// Metodos
-	
-	
-		
+
 		// Constructor
 		// POS: Crea un personaje y le asigna sus atributos.
 		Personaje(string, int, int, int);
@@ -51,10 +51,6 @@ class Personaje {
 		int obtenerPosY();
 		
 		void asignarPos(int, int);
-		
-		char obtenerSimbolo();
-		
-		void asignarSimbolo(char);
 
 		/*
 		 POS: RETORNA EL ATRIBUTO SELECCIONADO.
@@ -66,7 +62,31 @@ class Personaje {
 		*/
 		void elegido();
 
-		virtual ~Personaje();
+		char obtenerSimbolo();
+
+		void asignarSimbolo(char s);
+
+		string obtener_accion_1();
+
+		string obtener_accion_2();
+
+		void cambiar_accion_1(string otro);
+
+		void cambiar_accion_2(string otro);
+
+		virtual int atacar(string elemento){};
+
+		virtual int atacar(string elemento, int pos_x, int pos_y){};
+
+		virtual bool defenderse(){};
+
+		void cambiar_escudo();
+
+		void recuperar_vida();
+
+		void recibir_ataque(int golpe);
+
+		virtual ~Personaje(){};
 };
 
 #endif

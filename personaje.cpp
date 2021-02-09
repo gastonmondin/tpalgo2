@@ -6,15 +6,11 @@ Personaje::Personaje(string n, int e, int v, int en) {
 	vida = v;
 	energia = en;
 	seleccionado = false;
+	posX = -1;
+	posY = -1;
+	accion_1 = '\0';
+	accion_2 = '\0';
 }
-
-/*Personaje::Personaje(Personaje* p){
-	nombre = p->nombre;
-	escudo = p->escudo;
-	vida = p->vida;
-	energia = p->energia;
-	seleccionado = p->seleccionado;
-}*/
 
 string Personaje::obtenerElemento() {
 }
@@ -54,6 +50,30 @@ void Personaje::asignarPos(int x, int y) {
 	posY = y;
 }
 
+bool Personaje::obtener_seleccionado(){
+	return seleccionado;
+}
+
+string Personaje::obtener_accion_1(){
+	return accion_1;
+}
+
+string Personaje::obtener_accion_2(){
+	return accion_2;
+}
+
+void Personaje::cambiar_accion_1(string otro){
+	accion_1 = otro;
+}
+
+void Personaje::cambiar_accion_2(string otro){
+	accion_2 = otro;
+}
+
+void Personaje::elegido(){
+	seleccionado = true;
+}
+
 char Personaje::obtenerSimbolo() {
 	return simbolo;
 }
@@ -62,14 +82,27 @@ void Personaje::asignarSimbolo(char s) {
 	simbolo = s;
 }
 
-bool Personaje::obtener_seleccionado(){
-	return seleccionado;
+void Personaje::recibir_ataque(int golpe){
+	if(escudo == 1){
+		golpe = golpe * 0.9;
+	}else if(escudo == 2){
+		golpe = golpe * 0.8;
+	}else if(escudo > 2){
+		golpe = golpe * 0.2;
+	}
+	vida -= golpe;
 }
 
-void Personaje::elegido(){
-	seleccionado = true;
+void Personaje::recuperar_vida(){
+	if(vida < 100)
+		vida += 10;
+	else
+		cout << "La vida se encuentra al 100%" << endl;
+
+	if(vida > 100)
+		vida = 100;
 }
 
-Personaje::~Personaje(){
-	
+void Personaje::cambiar_escudo(){
+	escudo -= 2;
 }

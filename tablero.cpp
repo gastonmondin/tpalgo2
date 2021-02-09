@@ -126,6 +126,10 @@ bool Tablero::casilleroDisponible(int x, int y){
 		return false;
 }
 
+Casillero* Tablero::obtener_casillero(int x, int y){
+	return &casilleros[y][x];
+}
+
 Tablero::~Tablero(){
 	
 }

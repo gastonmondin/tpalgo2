@@ -7,6 +7,12 @@
 
 using namespace std;
 
+const string ATACAR		= "atacar";
+const string DEFENDER	= "defender";
+const string ALIMENTAR	= "alimentar";
+const string MOVER		= "mover";
+const string PASAR		= "pasar";
+
 class Menu {
 	// Atributos
 	
@@ -77,6 +83,77 @@ class Menu {
 		void seleccionarPosicion();
 		
 		void autocompletarEquipo();
+
+		/*
+		 POS: MUESTRA UN MENU PARA CADA PERSONAJE Y SE ELIGIRA LA ACCION QUE REALIZARA CADA UNO.
+		 */
+		void elegir_acciones(Dato personaje, int equipo);
+
+		/*
+		 POS: DETERMINARA LOS LIMILITES EN LOS ATAQUES DE ALGUNOS PERSONAJES
+		 */
+		void calcular_rango(int &ini, int &fin, int pos);
+
+		/*
+		 RETARDO
+		*/
+		void delay(float segs);
+
+		/*
+		 POS: DENTRO DE UN LIMITES ESTABLECIDOS ATACARA A TODOS LOS ENEMIGOS
+		*/
+		void radar_fuego(Dato personaje, int equipo);
+
+		/*
+		 POS: DETERMINARA EN RADIO DE IMPACTO DE SU ATAQUE
+		 */
+		bool limites_tierra(int &x_ini, int &x_fin, int &y_ini, int &y_fin);
+
+		/*
+		 POS: DENTRO DE UN LIMITES ESTABLECIDOS ATACARA A TODOS LOS ENEMIGOS
+		 */
+		void radar_tierra(Dato personaje, int equipo);
+
+		/*
+		 POS: SE EJECUTARAN LOS ATAQUES DE TODOS LOS PERSONAJES QUE TENGAN ESTA ACCION ACTIVA,
+		 */
+		void super_ataques(Dato personaje, string elemento, int energia, int equipo);
+
+		/*
+		 POS: VERIFICARA LAS ACCIONES DE CADA PERSONAJE Y LA EJECUTARA.
+		 */
+		void ejecutar_acciones();
+
+		/*
+		 POS: SE EJECUTARA EL JUEGO COMPLETO HASTA QUE TODOS LOS PERSONAJES DE UN EQUIPO QUEDEN
+		 	 CON VIDA IGUAL A 0.
+		 */
+		void comenzar_juego();
+
+		/*
+		 POS: LIMPIA EL TABLERO DE BATALLA.
+		 */
+		void limpiar_tablero();
+
+		/*
+		 POS: MUESTRA INFORMACION DEL PERSONAJE.
+		 */
+		void descripcion(Dato personaje);
+
+		/*
+		 POS: CALCULARA EL IMPACTO DEPENDIENDO DEL TIPO DE ENEMIGO, LUEGO REALIZARA EL ATAQUE.
+		 */
+		void atacar_objetivo(Dato emisor, Dato receptor);
+
+		/*
+		 POS: REALIZARA LAS DEFENZA ESPECIAL DEL PERSONAJE.
+		 */
+		void defensas(Dato personaje, string elemento, int equipo);
+
+		/*
+		 POS: UBICARA A TODOS LOS PERSONAJES EN SUS POSICIONES ESTABLECIDAS.
+		 */
+		void autoposicionar();
 	public:
 		Menu();
 		

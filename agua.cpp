@@ -25,3 +25,19 @@ bool Agua::alimentar() {
 		return false;
 	}
 }
+
+int Agua::atacar(string elemento){
+	return 0;
+}
+
+bool Agua::defenderse(){
+	if(energia > 12){
+		cout << "Energia: " << energia << " --> ";
+		energia -= 12;
+		cout << energia << '\n';
+		cout << nombre << " recupera 50 pts de vida. Sus aliados recuperan 10 pts de vida" << endl;
+		vida += 40;
+		return true;
+	}
+	return false;
+}

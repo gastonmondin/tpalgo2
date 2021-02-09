@@ -12,6 +12,8 @@ class Tierra : public Personaje {
 		string obtenerElemento();
 		string obtenerAlimento();
 		bool alimentar();
+		int atacar(string elemento, int pos_x, int pos_y);
+		bool defenderse();
 };
 
 #endif

@@ -10,6 +10,8 @@ class Aire : public Personaje {
 		Aire(string, int, int, int);
 		string obtenerElemento();
 		bool alimentar();
+		int atacar(string elemento);
+		bool defenderse();
 };
 
 #endif

@@ -11,3 +11,18 @@ string Aire::obtenerElemento() {
 bool Aire::alimentar() {
 	return false;
 }
+
+int Aire::atacar(string elemento){
+	return 0;
+}
+
+bool Aire::defenderse(){
+	if(energia > 15){
+		cout << "Energia: " << energia << " --> ";
+		energia -= 15;
+		cout << energia << "\n" << nombre << " se puede desplazar sin consumir energia" << endl;
+
+		return true;
+	}
+	return false;
+}

@@ -29,6 +29,7 @@ class Tablero {
 		void mostrar();
 		void aparecerPersonaje(Personaje*, int, int);
 		bool casilleroDisponible(int, int);
+		Casillero* obtener_casillero(int x, int y);
 };
 
 #endif
