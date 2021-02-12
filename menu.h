@@ -102,6 +102,21 @@ class Menu {
 		/*
 		 POS: DENTRO DE UN LIMITES ESTABLECIDOS ATACARA A TODOS LOS ENEMIGOS
 		*/
+
+		void ataque_agua(Dato personaje, int equipo);
+	 	*/
+		POS:REALIZA EL ATAQUE DEL PERSONAJE A LAS COORDENADAS INGRESADAS
+
+		/*
+
+		void ataque_aire(Dato personaje, int equipo);
+	 	*/
+		POS:REALIZA EL ATAQUE A TODOS LOS ENEMIGOS DEL TABLERO
+
+		/*
+
+
+
 		void radar_fuego(Dato personaje, int equipo);
 
 		/*

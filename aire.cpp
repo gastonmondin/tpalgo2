@@ -13,9 +13,18 @@ bool Aire::alimentar() {
 }
 
 int Aire::atacar(string elemento){
+	if(energia > 8){
+		energia -=8;
+		if(elemento == "Fuego")
+			return 10;
+		else if (elemento == "Tierra")
+			return 20;
+		else
+			return 15;
+	}
+
 	return 0;
 }
-
 bool Aire::defenderse(){
 	if(energia > 15){
 		cout << "Energia: " << energia << " --> ";

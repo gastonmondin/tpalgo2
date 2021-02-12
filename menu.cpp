@@ -1,5 +1,6 @@
 #include "menu.h"
 #include <fstream>
+#include <string>
 
 Menu::Menu() {
 }
@@ -69,7 +70,7 @@ void Menu::procesarArchivo() {
 	string linea, elemento, cant, datos[4];
 	personajes.open("personajes.csv");
 	getline(personajes,cant);
-	for(int i = 0; i < stoi(cant); i++) {
+	for(int i = 0; i < stoi(cant) ; i++) {
 		getline(personajes, linea);
 		procesarLinea(linea);
 	}
@@ -457,13 +458,42 @@ void Menu::radar_tierra(Dato personaje, int equipo){
 	}while(!limites_tierra(x_ini, x_fin, y_ini, y_fin));
 }
 
+void Menu::ataque_agua(Dato personaje, int equipo){
+	int fil,col;
+	cout << "Ingrese la Fila de su ataque "<<endl;
+	cin>> fil ;
+	cout << "Ingrese la Columna de  su ataque "<<endl;
+	cin >> col;
+	if (tablero.obtener_casillero(col, fil)->obtenerSimbolo() == equipo){
+						atacar_objetivo(personaje, tablero.obtener_casillero(col, fil)->obtenerPersonaje());
+					}else if(tablero.obtener_casillero(col, fil)->obtenerPersonaje() == 0){
+						tablero.obtener_casillero(col, fil)->asignarSimbolo('O');
+				}
+	tablero.mostrar();
+	descripcion(personaje);
+
+	delay(3);
+	limpiarPantalla();
+}
+
+void Menu::ataque_aire(Dato personaje, int equipo){
+	for(int i = 1; i <= listaPersonajes.obtenerCantidad(); i++){
+		if(listaPersonajes.consulta(i)->obtenerSimbolo() != equipo){
+			atacar_objetivo(personaje,listaPersonajes.consulta(i));
+				}
+	tablero.mostrar();
+	descripcion(personaje);
+
+	delay(3);
+	limpiarPantalla();
+	}
+}
+
 void Menu::super_ataques(Dato personaje, string elemento, int energia, int equipo){
 	if(elemento == "Fuego" && energia >= 5){
 		radar_fuego(personaje, equipo);
 	}else if(elemento == "Agua" && energia >= 5){
-		tablero.mostrar();
-		descripcion(personaje);
-		delay(3);
+		ataque_agua(personaje,equipo);
 	}else if(elemento == "Tierra" && energia >= 6){
 		radar_tierra(personaje, equipo);
 	}else if(elemento == "Aire" && energia >= 8){
