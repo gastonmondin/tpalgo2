@@ -401,7 +401,7 @@ void Menu::calcular_rango(int &ini, int &fin, int pos){
 	}
 }
 
-void Menu::radar_fuego(Dato personaje, int equipo){
+/*void Menu::radar_fuego(Dato personaje, int equipo){
 	int y_ini, y_fin;
 	int pos_y = personaje->obtenerPosY() - 1;
 	calcular_rango(y_ini, y_fin, pos_y);
@@ -419,7 +419,7 @@ void Menu::radar_fuego(Dato personaje, int equipo){
 		delay(2);
 		limpiarPantalla();
 	}
-}
+}*/
 
 bool Menu::limites_tierra(int &x_ini, int &x_fin, int &y_ini, int &y_fin){
 	if(x_ini == 0 && x_fin == 8 && y_ini == 0 && y_fin == 8)
@@ -476,7 +476,7 @@ void Menu::ataque_agua(Dato personaje, int equipo){
 	limpiarPantalla();
 }
 
-void Menu::ataque_aire(Dato personaje, int equipo){
+/*void Menu::ataque_aire(Dato personaje, int equipo){
 	for(int i = 1; i <= listaPersonajes.obtenerCantidad(); i++){
 		if(listaPersonajes.consulta(i)->obtenerSimbolo() != equipo){
 			atacar_objetivo(personaje,listaPersonajes.consulta(i));
@@ -487,11 +487,11 @@ void Menu::ataque_aire(Dato personaje, int equipo){
 	delay(3);
 	limpiarPantalla();
 	}
-}
+}*/
 
 void Menu::super_ataques(Dato personaje, string elemento, int energia, int equipo){
 	if(elemento == "Fuego" && energia >= 5){
-		radar_fuego(personaje, equipo);
+		//radar_fuego(personaje, equipo);
 	}else if(elemento == "Agua" && energia >= 5){
 		ataque_agua(personaje,equipo);
 	}else if(elemento == "Tierra" && energia >= 6){

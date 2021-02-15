@@ -6,6 +6,7 @@
 class Lago : public Casillero {
 	public:
 		Lago();
+		int obtenerCosto(string);
 };
 
 #endif

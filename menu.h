@@ -104,14 +104,13 @@ class Menu {
 		*/
 
 		void ataque_agua(Dato personaje, int equipo);
-	 	*/
+	 	/*
 		POS:REALIZA EL ATAQUE DEL PERSONAJE A LAS COORDENADAS INGRESADAS
-
 		/*
 
 		void ataque_aire(Dato personaje, int equipo);
 	 	*/
-		POS:REALIZA EL ATAQUE A TODOS LOS ENEMIGOS DEL TABLERO
+		//POS:REALIZA EL ATAQUE A TODOS LOS ENEMIGOS DEL TABLERO
 
 		/*
 
@@ -169,6 +168,7 @@ class Menu {
 		 POS: UBICARA A TODOS LOS PERSONAJES EN SUS POSICIONES ESTABLECIDAS.
 		 */
 		void autoposicionar();
+		
 	public:
 		Menu();
 		

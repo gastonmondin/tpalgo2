@@ -6,6 +6,7 @@
 class Vacio : public Casillero {
 	public:
 		Vacio();
+		int obtenerCosto(string);
 };
 
 #endif

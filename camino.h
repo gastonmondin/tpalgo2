@@ -6,6 +6,7 @@
 class Camino : public Casillero {
 	public:
 		Camino();
+		int obtenerCosto(string);
 };
 
 #endif

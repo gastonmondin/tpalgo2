@@ -12,6 +12,7 @@ class Casillero {
 		char simbolo;
 		string tipo;
 		Personaje* personaje;
+		Personaje* aux;
 	public:
 		Casillero();
 		char obtenerSimbolo();
@@ -19,6 +20,7 @@ class Casillero {
 		Personaje* obtenerPersonaje();
 		void asignarPersonaje(Personaje*);
 		string obtenerTipo();
+		virtual int obtenerCosto(string);
 		virtual ~Casillero();
 };
 

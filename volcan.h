@@ -6,6 +6,7 @@
 class Volcan : public Casillero {
 	public:
 		Volcan();
+		int obtenerCosto(string);
 };
 
 #endif

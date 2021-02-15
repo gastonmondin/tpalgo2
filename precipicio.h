@@ -6,6 +6,7 @@
 class Precipicio : public Casillero {
 	public:
 		Precipicio();
+		int obtenerCosto(string);
 };
 
 #endif

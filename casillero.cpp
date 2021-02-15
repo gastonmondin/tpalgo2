@@ -2,6 +2,7 @@
 
 Casillero::Casillero(){
 	personaje = 0;
+	aux = 0;
 }
 
 char Casillero::obtenerSimbolo() {
@@ -20,11 +21,23 @@ Personaje* Casillero::obtenerPersonaje() {
 }
 
 void Casillero::asignarPersonaje(Personaje* p) {
-	personaje = p;
+	if (p != 0 && personaje != 0) {
+			aux = personaje;
+			personaje = p;		
+	} else {
+		if (aux != 0){
+			personaje = aux;
+			aux = 0;
+		} else
+			personaje = p;
+	}
 }
 
 string Casillero::obtenerTipo(){
 	return tipo;
+}
+
+int Casillero::obtenerCosto(string elemento){
 }
 
 Casillero::~Casillero(){

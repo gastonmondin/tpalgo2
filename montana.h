@@ -6,6 +6,7 @@
 class Montana : public Casillero {
 	public:
 		Montana();
+		int obtenerCosto(string);
 };
 
 #endif
