@@ -70,9 +70,13 @@ class Menu {
 		// POS: ELEGIRA LA OPCION INDICADA DEL SUBMENU.
 		void elegir_subopcion(int opcion);
 
-		// VERIFICARA SI EL PERSONAJE SE ENCUENTRA DISPONIBLE PARA SER ELEGIDO, DE ESTAR DISPONIBLE
-		// SERA CARGADO A UN EQUIPO DESIGNADO, CASO CONTRARIO SE NOTIFICARA POR PANTALLA.
+		/*
+		 *VERIFICARA SI EL PERSONAJE SE ENCUENTRA DISPONIBLE PARA SER ELEGIDO, DE ESTAR DISPONIBLE
+		 SERA CARGADO A UN EQUIPO DESIGNADO, CASO CONTRARIO SE NOTIFICARA POR PANTALLA.
+		*/
 		void verificar_disponible(Personaje* p);
+
+		Dato elegido(string elemento, string nombre, int escudo, int vida, int energia);
 
 		// CARGARA EN UN EQUIPO EL PERSONAJE SELECCIONADO.
 		void cargar_equipos(Personaje* p);
@@ -87,7 +91,9 @@ class Menu {
 		/*
 		 POS: MUESTRA UN MENU PARA CADA PERSONAJE Y SE ELIGIRA LA ACCION QUE REALIZARA CADA UNO.
 		 */
-		void elegir_acciones(Dato personaje, int equipo);
+		bool elegir_accion_1(Dato personaje, int equipo);
+
+		bool elegir_accion_2(Dato personaje, int equipo);
 
 		/*
 		 POS: DETERMINARA LOS LIMILITES EN LOS ATAQUES DE ALGUNOS PERSONAJES
@@ -103,20 +109,16 @@ class Menu {
 		 POS: DENTRO DE UN LIMITES ESTABLECIDOS ATACARA A TODOS LOS ENEMIGOS
 		*/
 
-		void ataque_agua(Dato personaje, int equipo);
+		void ataque_agua(Dato personaje, char enemigo);
 	 	/*
 		POS:REALIZA EL ATAQUE DEL PERSONAJE A LAS COORDENADAS INGRESADAS
-		/*
-
-		void ataque_aire(Dato personaje, int equipo);
-	 	*/
-		//POS:REALIZA EL ATAQUE A TODOS LOS ENEMIGOS DEL TABLERO
+		*/
+		void ataque_aire(Dato personaje, char enemigo, int rivales);
 
 		/*
-
-
-
-		void radar_fuego(Dato personaje, int equipo);
+		 POS:
+		 */
+		void radar_fuego(Dato personaje, char enemigo);
 
 		/*
 		 POS: DETERMINARA EN RADIO DE IMPACTO DE SU ATAQUE
@@ -126,12 +128,14 @@ class Menu {
 		/*
 		 POS: DENTRO DE UN LIMITES ESTABLECIDOS ATACARA A TODOS LOS ENEMIGOS
 		 */
-		void radar_tierra(Dato personaje, int equipo);
+		void radar_tierra(Dato personaje, char enemigo);
+
+		bool atacados(string enemigo, string nombres[]);
 
 		/*
 		 POS: SE EJECUTARAN LOS ATAQUES DE TODOS LOS PERSONAJES QUE TENGAN ESTA ACCION ACTIVA,
 		 */
-		void super_ataques(Dato personaje, string elemento, int energia, int equipo);
+		void super_ataques(Dato personaje, string elemento, int energia, char equipo, int rivales);
 
 		/*
 		 POS: VERIFICARA LAS ACCIONES DE CADA PERSONAJE Y LA EJECUTARA.
@@ -169,6 +173,14 @@ class Menu {
 		 */
 		void autoposicionar();
 		
+		void guardar(ofstream &archivo, Dato personaje);
+
+		void guardar_datos(int grupo);
+
+		bool reanudar_partida();
+
+		void retomar_datos(ifstream &archivo);
+
 	public:
 		Menu();
 		

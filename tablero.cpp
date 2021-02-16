@@ -135,7 +135,7 @@ bool Tablero::casilleroDisponible(int x, int y){
 }
 
 Casillero* Tablero::obtener_casillero(int x, int y){
-	return &casilleros[y][x];
+	return casilleros[y][x];
 }
 
 void Tablero::inicializarMatrizDistancias(string elemento){

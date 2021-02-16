@@ -80,7 +80,9 @@ class Personaje {
 
 		virtual bool defenderse(){};
 
-		void cambiar_escudo();
+		void cambiar_escudo(int cambio);
+
+		void consumo_energia(int consumo);
 
 		void recuperar_vida();
 

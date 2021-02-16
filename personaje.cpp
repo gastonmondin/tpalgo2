@@ -8,8 +8,8 @@ Personaje::Personaje(string n, int e, int v, int en) {
 	seleccionado = false;
 	posX = -1;
 	posY = -1;
-	accion_1 = '\0';
-	accion_2 = '\0';
+	accion_1 = "\0";
+	accion_2 = "\0";
 }
 
 string Personaje::obtenerElemento() {
@@ -90,7 +90,10 @@ void Personaje::recibir_ataque(int golpe){
 	}else if(escudo > 2){
 		golpe = golpe * 0.2;
 	}
-	vida -= golpe;
+	if(vida > 0)
+		vida -= golpe;
+	if(vida <= 0)
+		vida = 0;
 }
 
 void Personaje::recuperar_vida(){
@@ -103,6 +106,10 @@ void Personaje::recuperar_vida(){
 		vida = 100;
 }
 
-void Personaje::cambiar_escudo(){
-	escudo -= 2;
+void Personaje::cambiar_escudo(int cambio){
+	escudo += cambio;
+}
+
+void Personaje::consumo_energia(int consumo){
+	energia -= consumo;
 }

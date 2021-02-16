@@ -26,17 +26,12 @@ bool Agua::alimentar() {
 	}
 }
 int Agua::atacar(string elemento){
-	if(energia > 5){
-		energia -=5;
-		if(elemento == "Fuego")
-			return 30;
-		else if (elemento == "Tierra")
-			return 10;
-		else
-			return 20;
-	}
-
-	return 0;
+	if(elemento == "Fuego")
+		return 30;
+	else if (elemento == "Tierra")
+		return 10;
+	else
+		return 20;
 }
 
 bool Agua::defenderse(){

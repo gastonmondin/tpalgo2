@@ -21,7 +21,6 @@ bool Fuego::alimentar() {
 }
 
 int Fuego::atacar(string elemento){
-	energia -= 5;
 	if(elemento == "Agua")
 		return 10;
 	else if(elemento == "Aire")
