@@ -38,6 +38,10 @@ public:
 	 POS: RETORNARA EL VALOR DE LA HOJA.
 	*/
 	Personaje* obtener_valor();
+
+	void cambiar_hoja_izq(Abb_hoja* hoja);
+
+	void cambiar_hoja_der(Abb_hoja* hoja);
 };
 
 

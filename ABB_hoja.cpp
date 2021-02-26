@@ -33,5 +33,12 @@ Personaje* Abb_hoja::obtener_valor(){
 	return valor;
 }
 
+void Abb_hoja::cambiar_hoja_izq(Abb_hoja* hoja){
+	hoja_izq = hoja;
+}
+
+void Abb_hoja::cambiar_hoja_der(Abb_hoja* hoja){
+	hoja_der = hoja;
+}
 
 

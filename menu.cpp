@@ -299,8 +299,9 @@ void Menu::elegirOpcionMenu(int opcion) {
 	switch (opcion) {
 		case 1: nuevoPersonaje();
 			break;
-		case 2: personaje = buscarPersonaje(ingresarNombre());
-			if (personaje !=0) eliminarPersonaje(personaje);
+		case 2: arbol.eliminar_hoja(ingresarNombre());
+			/*personaje = buscarPersonaje(ingresarNombre());
+			if (personaje !=0) eliminarPersonaje(personaje);*/
 			break;
 		case 3: mostrarPersonajes();
 			break;

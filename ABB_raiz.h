@@ -29,6 +29,9 @@ public:
 	 POS: DEVOLVERA EL DATO CORRESPONDIENTE AL TEXTO INGRESADO, CASO CONTRARIO RETORNARA 0.
 	*/
 	Personaje* buscar(string c);
+
+	void eliminar_hoja(string clave);
+
 	~Abb_raiz();
 
 private:
@@ -43,7 +46,7 @@ private:
 	/*
 	 POS: ELIMINARA UNA HOJA INDICADA.
 	*/
-	void borrar_hoja(Abb_hoja* h);
+	void borrar_ramas(Abb_hoja* h);
 	/*
 	 POS: BUSCARA POR CLAVE UNA HOJA ESPECIFICA.
 	*/
@@ -52,6 +55,18 @@ private:
 	 POS: CREARA UNA NUEVA HOJA EN UNA RAMA ESPECIFICA.
 	*/
 	void nuevo_hijo(Abb_hoja* &h, string c, Personaje* d);
+
+	string predecesor(Abb_hoja* hoja);
+
+	Abb_hoja* busco_predecesor(Abb_hoja* hoja);
+
+	Abb_hoja* obtener_padre(Abb_hoja* &padre, string clave);
+
+	Abb_hoja* busco_padre(string clave);
+
+	void eliminar(Abb_hoja* hoja, Abb_hoja* padre, string clave);
+
+	void borrar_hoja(Abb_hoja* hoja, Abb_hoja* padre, string clave);
 };
 
 
