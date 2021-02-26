@@ -13,8 +13,7 @@ class Agua : public Personaje {
 		string obtenerElemento();
 		string obtenerAlimento();
 		bool alimentar();
-		int atacar(string elemento);
-		bool defenderse();
+		void atacar(Personaje*);
 };
 
 #endif

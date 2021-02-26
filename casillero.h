@@ -13,6 +13,8 @@ class Casillero {
 		string tipo;
 		Personaje* personaje;
 		Personaje* aux;
+		bool ataqueFuego;
+		bool ataqueTierra;
 	public:
 		Casillero();
 		char obtenerSimbolo();
@@ -21,6 +23,8 @@ class Casillero {
 		void asignarPersonaje(Personaje*);
 		string obtenerTipo();
 		virtual int obtenerCosto(string);
+		void asignarAtaqueFuego(bool);
+		void asignarAtaqueTierra(bool);
 		virtual ~Casillero();
 };
 

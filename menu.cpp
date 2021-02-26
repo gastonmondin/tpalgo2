@@ -5,19 +5,10 @@
 Menu::Menu() {
 }
 
-void Menu::delay(float segs){
-	int tiempo = segs * 1000000;
-	usleep(tiempo);
-}
-
-void Menu::limpiar_tablero(){
-	tablero = Tablero();
-}
-
-void Menu::verificar_equipo(int &equipo){
+void Menu::verificarEquipo(int &equipo){
 	while(equipo != 1 && equipo != 2){
-		cout << "Error. Reingrese: ";
-		cin >> equipo; cout << endl;
+		cout << "Error. Reingrese: " << endl;
+		cin >> equipo;
 	}
 }
 
@@ -130,20 +121,9 @@ void Menu::eliminarPersonaje(Personaje* personaje) {
 }
 
 void Menu::mostrarPersonajes() {
-	/*cout << "Lista de personajes:" << endl;
-
-	arbol.mostrar_datos();
-	cout << endl << endl;*/
 	cout << "Lista de personajes:" << endl;
-
-	for (int i = 1; i <= listaPersonajes.obtenerCantidad(); i++){
-		cout << listaPersonajes.consulta(i)->obtenerNombre() << "\t";
-
-		if(!listaPersonajes.consulta(i)->obtener_seleccionado()){
-			cout << "(Disponible)"<< endl;
-		}else
-			cout << "(No Disponible)"<< endl;
-	}
+	arbol.mostrar_datos();
+	cout << endl;
 }
 
 void Menu::mostrarDetalles(Personaje* personaje) {
@@ -153,26 +133,57 @@ void Menu::mostrarDetalles(Personaje* personaje) {
 		cout << "Energia: " << personaje->obtenerEnergia() << endl;	
 }
 
-void Menu::alimentarPersonaje(Personaje* personaje) {
+void Menu::alimentarPersonaje(Personaje* p) {
 	int energiaAnterior, vidaAnterior;
-	energiaAnterior = personaje->obtenerEnergia();
-	vidaAnterior = personaje->obtenerVida();
-	if (personaje->alimentar()) {
-		cout << personaje->obtenerNombre() << " fue alimentado con " << personaje->obtenerAlimento() << " y recupero ";
-		if (personaje->obtenerElemento() == "Fuego")
-			cout << (personaje->obtenerVida() - vidaAnterior) << " de vida." << endl;
-		else
-			cout << (personaje->obtenerEnergia() - energiaAnterior) << " de energia." << endl;
+	energiaAnterior = p->obtenerEnergia();
+	vidaAnterior = p->obtenerVida();
+	if (p->alimentar()) {
+		cout << p->obtenerNombre() << " fue alimentado con " << p->obtenerAlimento() << " y recupero ";
+		cout << (p->obtenerEnergia() - energiaAnterior) << " de energia";
+		if (p->obtenerElemento() == "Fuego")
+			cout << " y " << (p->obtenerVida() - vidaAnterior) << " de vida";
+		cout << "." << endl;
 	} else {
-		cout << personaje->obtenerNombre() << " no fue alimentado porque ";
-		if (personaje->obtenerElemento() == "Aire")
+		cout << p->obtenerNombre() << " no fue alimentado porque ";
+		if (p->obtenerElemento() == "Aire")
 			cout << "es un personaje de aire." << endl;
 		else
 			cout << "ya fue alimentado 3 veces." << endl;
 	}
+	sleep(3);
 }
 
-Dato Menu::elegido(string elemento, string nombre, int escudo, int vida, int energia){
+void Menu::verificarEscudo(Personaje* p) {
+	if ((p->obtenerElemento() == "Tierra") && (p->obtenerDefenderse())){
+		p->terminarDefenderse();
+		cout << "El escudo extra de " << p->obtenerNombre();
+		cout << " dejo de hacer efecto." << endl;
+		sleep(3);
+	}
+}
+
+void Menu::verificarEnergia(Personaje* p) {
+	if ((p->obtenerElemento() == "Fuego") && (p->obtenerEnergia() == 0)){
+		int vidaAnterior = p->obtenerVida();
+		p->asignarVida(p->obtenerVida() - 5);
+		cout << "La energia de " << p->obtenerNombre() << " es 0, por lo tanto pierde ";
+		cout << (vidaAnterior - p->obtenerVida()) << " de vida." << endl;
+		sleep(3);
+		verificarEstado(p);
+	}
+}
+
+void Menu::recuperarEnergia(Personaje* p) {
+	if (p->obtenerElemento() == "Aire"){
+		int energiaAnterior = p->obtenerEnergia();
+		p->asignarEnergia(p->obtenerEnergia() + 5);
+		cout << p->obtenerNombre() << " recupero ";
+		cout << (p->obtenerEnergia() - energiaAnterior) << " de energia." << endl;
+		sleep(3);
+	}
+}
+
+Personaje* Menu::elegido(string elemento, string nombre, int escudo, int vida, int energia){
 	if (elemento == "Fuego") {
 		return new Fuego(nombre, escudo, vida, energia);
 	}else if (elemento == "Agua") {
@@ -183,35 +194,33 @@ Dato Menu::elegido(string elemento, string nombre, int escudo, int vida, int ene
 		return new Aire(nombre, escudo, vida, energia);
 }
 
-void Menu::cargar_equipos(Personaje* p){
-
-	Dato nuevo;
-	nuevo = elegido(p->obtenerElemento(),p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
-
+void Menu::cargarEquipos(Personaje* p){
 	int equipo;
-
 	cout << "Seleccione su equipo: ";
 	cin >> equipo; cout << endl;
-	verificar_equipo(equipo);
+	verificarEquipo(equipo);
 
-	if(equipo == 1 && equipos[0].obtenerCantidad() < 3)
+	if(equipo == 1 && equipos[0].obtenerCantidad() < 3){
+		p->asignarSeleccionado();
+		Dato nuevo = elegido(p->obtenerElemento(),p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
 		equipos[0].alta(nuevo, equipos[0].obtenerCantidad() + 1);
-	else if(equipo == 2 && equipos[1].obtenerCantidad() < 3)
+	} else if (equipo == 2 && equipos[1].obtenerCantidad() < 3){
+		Dato nuevo = elegido(p->obtenerElemento(),p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
 		equipos[1].alta(nuevo, equipos[1].obtenerCantidad() + 1);
-	else
+	} else
 		cout << "Equipo completo." << endl;
 }
 
-void Menu::verificar_disponible(Personaje* p){
-	if(!p->obtener_seleccionado()){
-		p->elegido();
-		cargar_equipos(p);
+void Menu::verificarDisponible(Personaje* p){
+	if(!p->obtenerSeleccionado()){
+		cargarEquipos(p);
 	}else
-		cout << "Personaje no disponible." << "\n\n";
+		cout << "Personaje no disponible." << endl;
 }
 
-void Menu::elegir_subopcion(int opcion){
+void Menu::elegirOpcionSubmenu(int opcion){
 	Personaje* personaje;
+	limpiarPantalla();
 	switch (opcion) {
 		case 1: personaje = buscarPersonaje(ingresarNombre());
 			if (personaje !=0) mostrarDetalles(personaje);
@@ -220,7 +229,7 @@ void Menu::elegir_subopcion(int opcion){
 			break;
 		case 3:	personaje = buscarPersonaje(ingresarNombre());
 			if (personaje !=0){
-				verificar_disponible(personaje);
+				verificarDisponible(personaje);
 			}
 			break;
 		case 4: break;
@@ -238,10 +247,9 @@ void Menu::seleccionarPosicion(){
 	do {
 		seleccionado = equipos[turno-1].consulta(cont/2);
 		cout << "Turno del jugador " << turno <<  "." << endl;
-		cout << "Elija la posicion en X de " << seleccionado->obtenerNombre() << ": ";
-		cin >> x;
-		cout << "Elija la posicion en Y de " << seleccionado->obtenerNombre() << ": ";
-		cin >> y;
+		cout << "Elija la posicion de " << seleccionado->obtenerNombre() << ": " << endl;
+		y = elegirFila();
+		x = elegirColumna();
 		if (tablero.casilleroDisponible(x, y)){
 			seleccionado->asignarSimbolo(turno + '0');
 			tablero.aparecerPersonaje(seleccionado, x, y);
@@ -257,7 +265,7 @@ void Menu::seleccionarPosicion(){
 	} while (cont < 8);
 }
 
-void Menu::mostrar_submenu(){
+void Menu::mostrarSubmenu(){
 	int opcion;
 	bool completo = false;
 	do {
@@ -272,26 +280,20 @@ void Menu::mostrar_submenu(){
 			cout << "4. Salir." << endl;
 			cout << "Elija una opcion: ";
 			cin >> opcion;
-			elegir_subopcion(opcion);
+			elegirOpcionSubmenu(opcion);
 		}
 	} while (opcion != 4 && !completo);
 	
 
 	if(completo){
-
-		//aca se empieza a jugar
-
-		/*imprimo lista de equipos para corroborar*/
-		cout << "equipo 1:" << endl;
-		for (int i = 1; i <= equipos[0].obtenerCantidad(); i++)
-			cout << equipos[0].consulta(i)->obtenerNombre() << endl;
-		cout << "equipo 2:" << endl;
-		for (int i = 1; i <= equipos[1].obtenerCantidad(); i++)
-			cout << equipos[1].consulta(i)->obtenerNombre() << endl;
+		cout << "Empieza el juego!" << endl;
+		sleep(3);
+		seleccionarPosicion();
+		comenzarJuego();
 	}
 }
 
-void Menu::elegirOpcion(int opcion) {
+void Menu::elegirOpcionMenu(int opcion) {
 	Personaje* personaje;
 	limpiarPantalla();
 	switch (opcion) {
@@ -305,7 +307,7 @@ void Menu::elegirOpcion(int opcion) {
 		case 4: personaje = buscarPersonaje(ingresarNombre());
 			if (personaje !=0) mostrarDetalles(personaje);
 			break;
-		case 5: mostrar_submenu();
+		case 5: mostrarSubmenu();
 			break;
 		case 6: break;
 		default: cout << "Debe elegir un valor entre 1 y 6, intente de nuevo." << endl;
@@ -320,274 +322,13 @@ void Menu::limpiarPantalla() {
 	#endif
 }
 
-void Menu::autocompletarEquipo(){
-	Personaje* p;
-	Personaje* nuevo;
-	for (int i = 0; i < 6; i++){
-		p = listaPersonajes.consulta(i+1);
-		if (p->obtenerElemento() == "Fuego") {
-			nuevo = new Fuego(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
-		}else if (p->obtenerElemento() == "Agua") {
-			nuevo = new Agua(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
-		}else if (p->obtenerElemento() == "Tierra") {
-			nuevo = new Tierra(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
-		}else if (p->obtenerElemento() == "Aire")
-			nuevo = new Aire(p->obtenerNombre(), p->obtenerEscudo(), p->obtenerVida(), p->obtenerEnergia());
-		equipos[i/3].alta(nuevo, equipos[i/3].obtenerCantidad() + 1);
-	}
-}
-
-bool Menu::elegir_accion_1(Dato personaje, int equipo){
-	int accion;
-
-	cout << "Personaje: " << personaje->obtenerNombre() << "\t\tEquipo: " << equipo << endl;
-	cout << "Primera accion: \n 1. Alimentarse\n 2. Moverse\n 3. Pasar turno\n 4. Salir del juego\n";
-	cout << "Selecione: "; cin >> accion; cout << endl;
-
-	if(accion == 4)
-		return true;
-	else if(accion == 1)
-		personaje->alimentar();
-	else if(accion == 2) personaje->cambiar_accion_1("mover");
-	else personaje->cambiar_accion_1("pasar");
-	return false;
-}
-
-bool Menu::elegir_accion_2(Dato personaje, int equipo){
-	int accion;
-
-	if(personaje->obtenerElemento() == "Tierra" && personaje->obtener_accion_2() == DEFENDER){
-		personaje->cambiar_accion_2('\0');
-		personaje->cambiar_escudo(-2);
-	}
-
-	cout << "Segunda accion: \n 1. Defenderse\n 2. Atacar\n 3. Pasar turno\n 4. Salir del juego\n";
-	cout << "Selecione: "; cin >> accion; cout << endl;
-
-	if(accion == 4)	return true;
-	else if(accion == 1)	defensas(personaje, personaje->obtenerElemento(), equipo);
-	else if(accion == 2)	personaje->cambiar_accion_2("atacar");
-	else	personaje->cambiar_accion_2("pasar");
-	return false;
-}
-
-void Menu::autoposicionar(){
-	int grupo = 0;
-
-	while(grupo < 2){
-		for(int i=1; i<=equipos[grupo].obtenerCantidad(); i++){
-			int x = equipos[grupo].consulta(i)->obtenerPosX();
-			int y = equipos[grupo].consulta(i)->obtenerPosY();
-			if(((grupo + 1) == 1))
-				tablero.aparecerPersonaje(equipos[grupo].consulta(i), x, y);
-			else
-				tablero.aparecerPersonaje(equipos[grupo].consulta(i), x, y);
-		}
-		grupo++;
-	}
-}
-
-void Menu::descripcion(Dato personaje){
-	cout << "Personaje: " << personaje->obtenerNombre() << "\t\tElemento: " << personaje->obtenerElemento() << "\n";
-	cout << "Vida: " << personaje->obtenerVida() << '\t' << "Energia: " << personaje->obtenerEnergia() << '\n';
-	cout << "Escudo: Nivel " << personaje->obtenerEscudo() << endl;
-}
-
-void Menu::atacar_objetivo(Dato emisor, Dato receptor){
-	int golpe;
-
-	if(emisor->obtenerElemento() == "Tierra"){
-		golpe = emisor->atacar(receptor->obtenerElemento(), receptor->obtenerPosX(), receptor->obtenerPosY());
-		receptor->recibir_ataque(golpe);
-	}else{
-		golpe = emisor->atacar(receptor->obtenerElemento());
-		receptor->recibir_ataque(golpe);
-	}
-	cout << "Ataco a " << receptor->obtenerNombre() << " golpe:" << golpe << endl;
-	delay(4);
-	limpiarPantalla();
-}
-
-void Menu::calcular_rango(int &ini, int &fin, int pos){
-	if(pos == 0){
-		ini = pos;
-		fin = pos + 1;
-	}else if(pos == 7){
-		ini = pos - 1;
-		fin = pos;
-	}else{
-		ini = pos - 1;
-		fin = pos + 1;
-	}
-}
-
-void Menu::radar_fuego(Dato personaje, char equipo){
-	int y_ini, y_fin;
-	int pos_y = personaje->obtenerPosY() - 1;
-	calcular_rango(y_ini, y_fin, pos_y);
-	for(int i=0; i<8; i++){
-		for(int j=y_ini; j <= y_fin; j++){
-			if(tablero.obtener_casillero(i, j)->obtenerSimbolo() == equipo){
-				atacar_objetivo(personaje, tablero.obtener_casillero(i, j)->obtenerPersonaje());
-			}else if(tablero.obtener_casillero(i, j)->obtenerPersonaje() == 0){
-				tablero.obtener_casillero(i, j)->asignarSimbolo('0');
-			}
-		}
-		tablero.mostrar();
-		descripcion(personaje);
-
-		delay(0.75);
-		limpiarPantalla();
-	}
-}
-
-bool Menu::limites_tierra(int &x_ini, int &x_fin, int &y_ini, int &y_fin){
-	if(x_ini == 0 && x_fin == 7 && y_ini == 0 && y_fin == 7)
-		return true;
-
-	if(x_ini > 0)	x_ini--;
-	if(x_fin < 7)	x_fin++;
-	if(y_ini > 0)	y_ini--;
-	if(y_fin < 7)	y_fin++;
-
-	return false;
-}
-
-bool Menu::atacados(string enemigo, string nombres[3]){
-	bool atacado = false;
-	int i=0;
-	while(i < 3 && !atacado){
-		if(enemigo == nombres[i])
-			atacado = true;
-		i++;
-	}
-	i = 0;
-	while(i < 3 && !atacado){
-		if(nombres[i] == "\0"){
-			nombres[i] = enemigo;
-			i = 3;
-		}
-		i++;
-	}
-
-	return atacado;
-}
-
-void Menu::radar_tierra(Dato personaje, char enemigo){
-	string nombres[] = {"\0","\0","\0"};
-	int x_ini, x_fin, y_ini, y_fin;
-	int pos_x = personaje->obtenerPosX() - 1;
-	int pos_y = personaje->obtenerPosY() - 1;
-	calcular_rango(x_ini, x_fin, pos_x);
-	calcular_rango(y_ini, y_fin, pos_y);
-
-	do{
-		for(int i=y_ini; i<=y_fin; i++){
-			for(int j=x_ini; j<=x_fin; j++){
-				if(tablero.obtener_casillero(j, i)->obtenerSimbolo() == enemigo){
-					if(!atacados(tablero.obtener_casillero(j, i)->obtenerPersonaje()->obtenerNombre(), nombres))
-						atacar_objetivo(personaje, tablero.obtener_casillero(j, i)->obtenerPersonaje());
-				}else if(tablero.obtener_casillero(j, i)->obtenerPersonaje() == 0)
-					tablero.obtener_casillero(j, i)->asignarSimbolo('0');
-			}
-		}
-		tablero.mostrar();
-		descripcion(personaje);
-
-		delay(0.75);
-		limpiarPantalla();
-
-	}while(!limites_tierra(x_ini, x_fin, y_ini, y_fin));
-}
-
-void Menu::ataque_agua(Dato personaje, char equipo){
-	int fil,col;
-	cout << "Ingrese la Fila de su ataque: ";
-	cin>> fil ;
-	cout << "Ingrese la Columna de  su ataque: ";
-	cin >> col;
-	if (tablero.obtener_casillero(col, fil)->obtenerSimbolo() == equipo){
-		atacar_objetivo(personaje, tablero.obtener_casillero(col, fil)->obtenerPersonaje());
-	}else if(tablero.obtener_casillero(col, fil)->obtenerPersonaje() == 0){
-		tablero.obtener_casillero(col, fil)->asignarSimbolo('X');
-	}
-	tablero.mostrar();
-	descripcion(personaje);
-
-	delay(3);
-	limpiarPantalla();
-}
-
-void Menu::ataque_aire(Dato personaje, char enemigo, int rivales){
-	for(int i = 1; i <= equipos[rivales].obtenerCantidad(); i++){
-		atacar_objetivo(personaje, equipos[rivales].consulta(i));
-	}
-	tablero.mostrar();
-	descripcion(personaje);
-
-	delay(3);
-	limpiarPantalla();
-}
-
-void Menu::super_ataques(Dato personaje, string elemento, int energia, char enemigo, int rivales){
-	if(elemento == "Fuego" && energia >= 5){
-		personaje->consumo_energia(5);
-		radar_fuego(personaje, enemigo);
-	}else if(elemento == "Agua" && energia >= 5){
-		personaje->consumo_energia(5);
-		ataque_agua(personaje, enemigo);
-	}else if(elemento == "Tierra" && energia >= 6){
-		personaje->consumo_energia(6);
-		radar_tierra(personaje, enemigo);
-	}else if(elemento == "Aire" && energia >= 8){
-		ataque_aire(personaje, enemigo, rivales);
-	}else{
-		tablero.mostrar();
-		descripcion(personaje);
-		cout << "No puede atacar, me falta energia..." << endl;
-		delay(3);
-	}
-	limpiarPantalla();
-}
-
-void Menu::defensas(Dato personaje, string elemento, int equipo){
-	bool completado = personaje->defenderse();
-
-	if(completado)
-		cout << "Defenza realizada con exito\n";
-	if(elemento == "Fuego" && completado){
-		personaje->recuperar_vida();
-	}else if(elemento == "Agua" && completado){
-		for(int i=0; i<=equipos[equipo].obtenerCantidad(); i++){
-			equipos[equipo].consulta(i)->recuperar_vida();
-		}
-	}else if(elemento == "Aire" && completado){
-
-	}else
-		cout << "Energia insuficiente" << endl;
-
-	delay(2);
-	limpiarPantalla();
-	tablero.mostrar();
-}
-
-void Menu::ejecutar_acciones(){
-	int grupo = 0;
-	//modularizar!!!!!!!!!
-	while(grupo < 2){
-		for(int i=1; i<=equipos[grupo].obtenerCantidad(); i++){
-			if(equipos[grupo].consulta(i)->obtener_accion_2() == ATACAR){
-				if((grupo + 1) == 1)
-					super_ataques(equipos[grupo].consulta(i), equipos[grupo].consulta(i)->obtenerElemento(), equipos[grupo].consulta(i)->obtenerEnergia(), '2', 1);
-				else
-					super_ataques(equipos[grupo].consulta(i), equipos[grupo].consulta(i)->obtenerElemento(), equipos[grupo].consulta(i)->obtenerEnergia(), '1', 0);
-				limpiar_tablero();
-				autoposicionar();
-			}
-		}
-		grupo++;
-	}
-	tablero.mostrar();
+void Menu::mostrarDescripcion(Personaje* p){
+	Casillero* c = tablero.obtenerCasillero(p->obtenerPosX(), p->obtenerPosY());
+	cout << "Personaje: " << p->obtenerNombre() << "     Elemento: " << p->obtenerElemento() << endl;
+	cout << "Terreno: " << c->obtenerTipo();
+	cout << "     Posicion: (" << p->obtenerPosX() << "," << p->obtenerPosY() << ")" << endl;
+	cout << "Vida: " << p->obtenerVida() << "     Energia: " << p->obtenerEnergia() << endl;
+	cout << "Escudo: Nivel " << p->obtenerEscudo() << endl;
 }
 
 void Menu::guardar(ofstream &archivo, Dato personaje){
@@ -596,82 +337,49 @@ void Menu::guardar(ofstream &archivo, Dato personaje){
 	int escudo = personaje->obtenerEscudo();
 	int vida = personaje->obtenerVida();
 	int energia = personaje->obtenerEnergia();
-	int fila = personaje->obtenerPosX();
-	int columna = personaje->obtenerPosY();
+	int fila = personaje->obtenerPosY();
+	int columna = personaje->obtenerPosX();
 
 	archivo << elemento << "," << nombre << "," << escudo << "," << vida << "," << energia << "," << fila << "," << columna << "\n";
 }
 
-void Menu::guardar_datos(int grupo){
+void Menu::guardarDatos(int grupo){
 	ofstream archivo;
 
 	cout << "Creando archivo..." << endl;
-	archivo.open("autoguardado.csv");
+	sleep(3);
+	archivo.open("partida.csv");
 	if(!archivo){
 		cout << "Imposible crear el archivo." << endl;
+		sleep(3);
 		return;
 	}
-
-	archivo << (grupo + 1) << "\n";
-	while(grupo < 2){
-		for(int i=1; i<=equipos[grupo].obtenerCantidad(); i++){
-			guardar(archivo, equipos[grupo].consulta(i));
-		}
-		grupo++;
-	}
-
+	archivo << grupo << "\n";
+	for (int i = 0; i <= 1; i++)
+		for(int j = 1; j <= equipos[i].obtenerCantidad(); j++)
+			guardar(archivo, equipos[i].consulta(j));
 	cout << "Carga completa." << endl;
+	sleep(3);
 	archivo.close();
 }
 
-void Menu::comenzar_juego(){
-	int grupo = 0;
-	int i = 1;
-	bool fin = false;
-	/////////////////////////////////////////////
-	//modularizar!!!!!!!!!
-	while(grupo < 2 && !fin){
-		while(i<=equipos[grupo].obtenerCantidad() && !fin){
-			fin = elegir_accion_1(equipos[grupo].consulta(i), grupo + 1);
-			if(!fin)
-				fin = elegir_accion_2(equipos[grupo].consulta(i), grupo + 1);
-			if(!fin){
-				limpiarPantalla();
-				tablero.mostrar();
-				i++;
-			}
-		}
-		grupo++;
-		i = 1;
-	}
-	/////////////////////////////////////////////
-	if(!fin){
-		limpiarPantalla();
-		ejecutar_acciones();
-	}
-
-
-	if(fin)
-		guardar_datos(grupo - 1);
-}
-
-void Menu::retomar_datos(ifstream &archivo){
+void Menu::retomarDatos(ifstream &archivo){
 	int i=0, grupo = 0;
-	string elemento, nombre, escudo, vida, energia, pos_x, pos_y;
-	Dato nuevo;
+	string elemento, nombre, escudo, vida, energia, posY, posX;
+	Personaje* nuevo;
 	getline(archivo, elemento);
 	while(getline(archivo, elemento, ',')){
 		getline(archivo, nombre, ',');
 		getline(archivo, escudo, ',');
 		getline(archivo, vida, ',');
 		getline(archivo, energia, ',');
-		getline(archivo, pos_x, ',');
-		getline(archivo, pos_y);
+		getline(archivo, posY, ',');
+		getline(archivo, posX);
 		nuevo = elegido(elemento, nombre, atoi(escudo.c_str()), atoi(vida.c_str()), atoi(energia.c_str()));
 		equipos[grupo].alta(nuevo, equipos[grupo].obtenerCantidad() + 1);
 		i++;
 		equipos[grupo].consulta(i)->asignarSimbolo(grupo + 1 + '0');
-		equipos[grupo].consulta(i)->asignarPos(atoi(pos_x.c_str()), atoi(pos_y.c_str()));
+		tablero.aparecerPersonaje(equipos[grupo].consulta(i), atoi(posX.c_str()), atoi(posY.c_str()));
 
 		if(i == 3){
 			grupo++;
@@ -680,37 +388,388 @@ void Menu::retomar_datos(ifstream &archivo){
 
 	}
 	cout << "Carga de datos completado." << endl;
-	delay(2);
-	limpiarPantalla();
-	autoposicionar();
-	tablero.mostrar();
+	sleep(3);
 }
 
-bool Menu::reanudar_partida(){
+bool Menu::reanudarPartida(){
 	limpiarPantalla();
 	ifstream archivo;
-	archivo.open("autoguardado.csv");
+	archivo.open("partida.csv");
 	if(!archivo){
 		return false;
 	}
 	char resp;
 	cout << "Existe una partida guardada.\n\nDesea reanudar la partida (S/N)? : ";
 	cin >> resp;
-
 	if(resp == 'S' || resp == 's'){
-		retomar_datos(archivo);
+		retomarDatos(archivo);
 		archivo.close();
-		remove("autoguardado.csv");
+		remove("partida.csv");
 		return true;
 	}
 	archivo.close();
-	remove("autoguardado.csv");
+	remove("partida.csv");
 	return false;
+}
+
+void Menu::verificarEstado(Personaje* p) {
+	if (p->obtenerVida() == 0){
+		int equipo;
+		Casillero* c = tablero.obtenerCasillero(p->obtenerPosX(), p->obtenerPosY());
+		c->asignarPersonaje(0);
+		p->asignarPos(0, 0);
+		cout << p->obtenerNombre() << " se ha debilitado." << endl;
+		if (p->obtenerSimbolo() == '1')
+			equipo = 0;
+		else
+			equipo = 1;
+		for (int i = 1; i <= equipos[equipo].obtenerCantidad(); i++)
+			if (p == equipos[equipo].consulta(i))
+				equipos[equipo].baja(i);
+		sleep(3);
+	}
+}
+
+void Menu::realizarAtaque(Personaje* emisor, Personaje* receptor, int rango){
+	int vidaAnterior = receptor->obtenerVida();
+	if (emisor->obtenerElemento() == "Tierra"){
+		emisor->atacar(receptor, rango);
+		receptor->asignarAtacado(true);
+	}	
+	else
+		emisor->atacar(receptor);
+	cout << emisor->obtenerNombre() << " le quito " << vidaAnterior - receptor->obtenerVida();
+	cout << " de vida a " << receptor->obtenerNombre() << "." << endl;
+	sleep(3);
+	verificarEstado(receptor);
+}
+
+void Menu::ataqueAgua(Personaje* emisor){
+	Casillero* c = tablero.obtenerCasillero(elegirColumna(), elegirFila());
+	if (c->obtenerPersonaje()){
+		Personaje* receptor = c->obtenerPersonaje();
+		if (emisor->obtenerSimbolo() != receptor->obtenerSimbolo())
+			realizarAtaque(emisor, receptor, 0);	
+		else{
+			cout << "No se puede atacar a un personaje del mismo equipo." << endl;
+			sleep(3);
+		}	
+	} else{
+		cout << "No hay ningun personaje en esa posicion." << endl;
+		sleep(3);
+	}	
+}
+
+void Menu::ataqueAire(Personaje* emisor){
+	int rival, equipo
+	;
+	if (emisor->obtenerSimbolo() == '1')
+		equipo = 1;
+	else
+		equipo = 0;
+	for (int i = 1; i <= equipos[equipo].obtenerCantidad(); i++){
+		Personaje* receptor = equipos[equipo].consulta(i);
+		realizarAtaque(emisor, receptor, 0);
+	}
+}
+
+void Menu::ataqueFuego(Personaje* emisor){
+	int y = emisor->obtenerPosY();
+	for (int i = 1; i <= 8; i++){
+		animacionFuego(i, y);
+		for (int j = limiteSuperior(y - 1); j <= limiteInferior(y + 1); j++){
+			Personaje* receptor = tablero.obtenerCasillero(i, j)->obtenerPersonaje();
+			if (receptor && receptor->obtenerSimbolo() != emisor->obtenerSimbolo())
+				realizarAtaque(emisor, receptor, 0);
+		}
+	}
+	refrescarTablero();
+}
+
+void Menu::animacionFuego(int i, int y){
+	for (int j = limiteSuperior(y - 1); j <= limiteInferior(y + 1); j++)
+		tablero.obtenerCasillero(i, j)->asignarAtaqueFuego(true);
+	limpiarPantalla();
+	tablero.mostrar();
+	usleep(250000);
+}
+
+int Menu::limiteSuperior(int limite) {
+	if (limite < 1)
+		return limite + 1;
+	else
+		return limite;
+}
+
+int Menu::limiteInferior(int limite) {
+	if (limite > 8)
+		return limite - 1;
+	else
+		return limite;
+}
+
+void Menu::ataqueTierra(Personaje* emisor){
+	int x = emisor->obtenerPosX();
+	int y = emisor->obtenerPosY();
+	for (int k = 1; k <= 7; k++){
+		animacionTierra(k, x, y);
+		for (int i = x - k; i <= x + k; i++){
+			for (int j = y - k; j <= y + k; j++)
+				if ((i >= 1 && i <= 8) && (j >= 1 && j <= 8)){
+					Personaje* receptor = tablero.obtenerCasillero(i, j)->obtenerPersonaje();
+					if (receptor && (receptor->obtenerSimbolo() != emisor->obtenerSimbolo()) && !receptor->obtenerAtacado())
+						realizarAtaque(emisor, receptor, k);
+				}
+		}
+	}
+	refrescarTablero();
+}
+
+void Menu::animacionTierra(int k, int x, int y){
+	for (int i = x - k; i <= x + k; i++){
+		for (int j = y - k; j <= y + k; j++)
+			if ((i >= 1 && i <= 8) && (j >= 1 && j <= 8) && (i != x || j != x))
+				tablero.obtenerCasillero(i, j)->asignarAtaqueTierra(true);
+	}
+	limpiarPantalla();
+	tablero.mostrar();
+	usleep(250000);
+}
+
+void Menu::refrescarTablero(){
+	for (int i = 1; i <= 8; i++)
+		for (int j = 1; j <= 8; j++){
+			tablero.obtenerCasillero(i, j)->asignarAtaqueTierra(false);
+			tablero.obtenerCasillero(i, j)->asignarAtaqueFuego(false);
+			Personaje* p = tablero.obtenerCasillero(i, j)->obtenerPersonaje();
+			if (p && p->obtenerAtacado())
+				p->asignarAtacado(false);
+		}
+}
+
+void Menu::ataquePersonaje(Personaje* p){
+	if ((p->obtenerElemento() == "Agua") && (p->obtenerEnergia() >= 5)) {
+		ataqueAgua(p);
+		p->asignarEnergia(p->obtenerEnergia() - 5);
+		cout << p->obtenerNombre() << " gasto 5 de energia para realizar su ataque." << endl;
+	} else if ((p->obtenerElemento() == "Aire") && (p->obtenerEnergia() >= 8)) {
+		ataqueAire(p);
+		p->asignarEnergia(p->obtenerEnergia() - 8);
+		cout << p->obtenerNombre() << " gasto 8 de energia para realizar su ataque." << endl;
+	} else if ((p->obtenerElemento() == "Fuego") && (p->obtenerEnergia() >= 8)) {
+		ataqueFuego(p);
+		p->asignarEnergia(p->obtenerEnergia() - 8);
+		cout << p->obtenerNombre() << " gasto 8 de energia para realizar su ataque." << endl;
+	} else if ((p->obtenerElemento() == "Tierra") && (p->obtenerEnergia() >= 6)){
+		ataqueTierra(p);
+		p->asignarEnergia(p->obtenerEnergia() - 6);
+		cout << p->obtenerNombre() << " gasto 6 de energia para realizar su ataque." << endl;
+	} else
+		cout << p->obtenerNombre() << " no tiene suficiente energia para realizar el ataque." << endl;
+	sleep(3);
+}
+
+void Menu::defensaAgua(Personaje* emisor) {
+	int equipo;
+	if (emisor->obtenerSimbolo() == '1')
+		equipo = 0;
+	else
+		equipo = 1;
+	for (int i = 1; i <= equipos[equipo].obtenerCantidad(); i++){
+		Personaje* receptor = equipos[equipo].consulta(i);
+		int vidaAnterior = receptor->obtenerVida();
+		if (emisor == receptor){
+			receptor->asignarVida(receptor->obtenerVida() + 50);
+			cout << emisor->obtenerNombre() << " se curo ";
+			cout << receptor->obtenerVida() - vidaAnterior << " de vida." << endl;
+		}	
+		else{
+			receptor->asignarVida(receptor->obtenerVida() + 10);
+			cout << emisor->obtenerNombre() << " le curo ";
+			cout << receptor->obtenerVida() - vidaAnterior;
+			cout << " de vida a " << receptor->obtenerNombre() << "." << endl;
+		}
+		sleep(3);		
+	}
+}
+
+void Menu::defensaAire(Personaje* p) {
+	Casillero* c = tablero.obtenerCasillero(p->obtenerPosX(), p->obtenerPosY());
+	tablero.aparecerPersonaje(p, elegirColumna(), elegirFila());
+	c->asignarPersonaje(0);
+	cout << p->obtenerNombre() << " se teletransporto a (";
+	cout << p->obtenerPosX() << "," << p->obtenerPosY() << ")." << endl;
+}
+
+void Menu::defensaFuego(Personaje* p) {
+	int vidaAnterior = p->obtenerVida();
+	p->asignarVida(p->obtenerVida() + 10);
+	cout << p->obtenerNombre() << " se curo ";
+	cout << p->obtenerVida() - vidaAnterior << " de vida." << endl;
+}
+
+void Menu::defensaTierra(Personaje* p) {
+	int escudoAnterior = p->obtenerEscudo();
+	p->defender();
+	cout << p->obtenerNombre() << " tiene un escudo de ";
+	cout << p->obtenerEscudo() << " puntos durante un turno." << endl;
+}
+
+void Menu::defensaPersonaje(Personaje* p){
+	if ((p->obtenerElemento() == "Agua") && (p->obtenerEnergia() >= 12)) {
+		defensaAgua(p);
+		p->asignarEnergia(p->obtenerEnergia() - 12);
+		cout << p->obtenerNombre() << " gasto 12 de energia para defenderse." << endl;
+	} else if ((p->obtenerElemento() == "Aire") && (p->obtenerEnergia() >= 15)) {
+		defensaAire(p);
+		p->asignarEnergia(p->obtenerEnergia() - 15);
+		cout << p->obtenerNombre() << " gasto 15 de energia para defenderse." << endl;
+	} else if ((p->obtenerElemento() == "Fuego") && (p->obtenerEnergia() >= 10)) {
+		defensaFuego(p);
+		p->asignarEnergia(p->obtenerEnergia() - 10);
+		cout << p->obtenerNombre() << " gasto 10 de energia para defenderse." << endl;
+	} else if ((p->obtenerElemento() == "Tierra") && (p->obtenerEnergia() >= 6)){
+		defensaTierra(p);
+		p->asignarEnergia(p->obtenerEnergia() - 6);
+		cout << p->obtenerNombre() << " gasto 6 de energia para defenderse." << endl;
+	} else
+		cout << p->obtenerNombre() << " no tiene suficiente energia para defenderse." << endl;	
+	sleep(3);
+}
+
+int Menu::elegirOpcion(Personaje* p, int o) {
+	int opcion;
+	limpiarPantalla();
+	tablero.mostrar();
+	cout << "Turno del jugador " << p->obtenerSimbolo() << "." << endl;
+	mostrarDescripcion(p);
+	if (o == 1)
+		cout << "1. Alimentarse." << endl << "2. Moverse." << endl;
+	else
+		cout << "1. Atacar." << endl << "2. Defenderse." << endl;	
+	cout << "3. Pasar opcion." << endl << "4. Salir del juego." << endl;
+	do {
+		if (opcion < 1 && opcion > 4)
+			cout << "Opcion invalida, ingrese de nuevo: ";
+		else
+			cout << "Ingrese una opcion: ";
+		cin >> opcion;
+	} while (opcion < 1 && opcion > 4);
+	return opcion;
+}
+
+int Menu::elegirFila(){
+	int fila;
+	cout << "Ingrese fila: ";
+	cin >> fila;
+	return fila;
+}
+
+int Menu::elegirColumna(){
+	int columna;
+	cout << "Ingrese columna: ";
+	cin >> columna;
+	return columna;
+}
+
+bool Menu::ejecutarPrimeraOpcion(int opcion, Personaje* p){
+	bool ejecutar;
+	switch (opcion) {
+		case 1:
+			alimentarPersonaje(p);
+			ejecutar = true;
+			break;
+		case 2:
+			if (!tablero.moverPersonaje(p, elegirColumna(), elegirFila())) {
+				cout << "El movimiento no se realizo, elija otra opcion u otro lugar para moverse." << endl;
+				sleep(3);
+				ejecutar = false;
+			} else
+				ejecutar = true;
+			break;	
+		case 3:
+			ejecutar = true;
+			break;
+		case 4:
+			guardarDatos(p->obtenerSimbolo() - '0');
+			ejecutar = false;
+	}
+	return ejecutar;
+}
+
+bool Menu::ejecutarSegundaOpcion(int opcion, Personaje* p){
+	bool ejecutar;
+	switch (opcion) {
+		case 1:
+			ataquePersonaje(p);
+			ejecutar = true;
+			break;
+		case 2:
+			defensaPersonaje(p);
+			ejecutar = true;
+		case 3:
+			ejecutar = true;
+			break;
+		case 4:
+			guardarDatos(p->obtenerSimbolo() - '0');
+			ejecutar = false;
+	}
+	return ejecutar;
+}
+
+bool Menu::gameOver() {
+	if (equipos[0].obtenerCantidad() == 0) {
+		cout << "Juego terminado, el ganador es el jugador 2." << endl;
+		sleep(3);
+		return true;
+	} else if (equipos[1].obtenerCantidad() == 0) {
+		cout << "Juego terminado, el ganador es el jugador 1." << endl;
+		sleep(3);
+		return true;
+	} else
+		return false;
+}
+
+bool Menu::partidaGuardada() {
+	ifstream archivo;
+	archivo.open("partida.csv");
+	if (archivo)
+		return true;
+	else
+		return false;
+}
+
+void Menu::comenzarJuego(){
+	int cont1 = 1, cont2 = 1, turno = rand() % 2 + 1;
+	Personaje* seleccionado;
+	do {
+		if (turno == 1){
+			if (cont1 > equipos[turno-1].obtenerCantidad())
+				cont1 = 1;
+			seleccionado = equipos[turno-1].consulta(cont1);
+		} else {
+			if (cont2 > equipos[turno-1].obtenerCantidad())
+				cont2 = 1;
+			seleccionado = equipos[turno-1].consulta(cont2);
+		}
+		verificarEscudo(seleccionado);
+		if(ejecutarPrimeraOpcion(elegirOpcion(seleccionado, 1), seleccionado) && ejecutarSegundaOpcion(elegirOpcion(seleccionado, 2), seleccionado)){
+			if (turno == 1){
+				turno++;
+				cont1++;
+			} else {
+				turno--;
+				cont2++;
+			}
+			verificarEnergia(seleccionado);
+			recuperarEnergia(seleccionado);
+		}
+	} while(!gameOver() && !partidaGuardada());
 }
 
 void Menu::mostrarMenu() {
 
-	if(!reanudar_partida()){
+	if(!reanudarPartida()){
 		int opcion;
 		do {
 			cout << "----MENU DE OPCIONES----" << endl;
@@ -722,15 +781,13 @@ void Menu::mostrarMenu() {
 			cout << "6. Salir." << endl;
 			cout << "Elija una opcion: ";
 			cin >> opcion;
-			elegirOpcion(opcion);
+			elegirOpcionMenu(opcion);
 
 			////////////////////////////////////////////////
-			autocompletarEquipo();
-			seleccionarPosicion();
+			
 			////////////////////////////////////////////////
 		} while (opcion != 6);
-	}
-
-	comenzar_juego();
+	} else
+		comenzarJuego();
 	cout << "Fin del juego." << endl;
 }

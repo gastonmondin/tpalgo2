@@ -14,27 +14,23 @@ string Fuego::obtenerAlimento() {
 }
 
 bool Fuego::alimentar() {
-	vida += 15;
+	vida += 5;
 	if (vida > 100)
 		vida = 100;
+	energia += 10;
+	if (energia > 20)
+		energia = 20;
 	return true;
 }
 
-int Fuego::atacar(string elemento){
-	if(elemento == "Agua")
-		return 10;
-	else if(elemento == "Aire")
-		return 30;
-	return 20;
-}
-
-bool Fuego::defenderse(){
-	if(energia > 10){
-		cout << "Energia: " << energia << " --> ";
-		energia -= 10;
-		cout << energia << '\n';
-		cout << nombre << " recupera 10 pts de vida" << endl;
-		return true;
-	}
-	return false;
+void Fuego::atacar(Personaje* p){
+	int ataque, golpe;
+	if(p->obtenerElemento() == "Aire")
+		ataque = 30;
+	else if (p->obtenerElemento() == "Agua")
+		ataque = 10;
+	else
+		ataque = 20;
+	golpe = (100 - p->obtenerEscudo() * 10) * ataque / 100;
+	p->asignarVida(p->obtenerVida() - golpe);
 }

@@ -6,16 +6,9 @@ Personaje::Personaje(string n, int e, int v, int en) {
 	vida = v;
 	energia = en;
 	seleccionado = false;
-	posX = -1;
-	posY = -1;
-	accion_1 = "\0";
-	accion_2 = "\0";
-}
-
-string Personaje::obtenerElemento() {
-}
-
-string Personaje::obtenerAlimento() {
+	posX = 0;
+	posY = 0;
+	atacado = false;
 }
 
 string Personaje::obtenerNombre() {
@@ -34,7 +27,18 @@ int Personaje::obtenerEnergia() {
 	return energia;
 }
 
-bool Personaje::alimentar() {
+void Personaje::asignarVida(int v) {
+	if (v > 100)
+		v = 100;
+	else if (v < 0)
+		v = 0;
+	vida = v;
+}
+
+void Personaje::asignarEnergia(int en){
+	if (en > 20)
+		en = 20;
+	energia = en;
 }
 
 int Personaje::obtenerPosX() {
@@ -50,27 +54,11 @@ void Personaje::asignarPos(int x, int y) {
 	posY = y;
 }
 
-bool Personaje::obtener_seleccionado(){
+bool Personaje::obtenerSeleccionado(){
 	return seleccionado;
 }
 
-string Personaje::obtener_accion_1(){
-	return accion_1;
-}
-
-string Personaje::obtener_accion_2(){
-	return accion_2;
-}
-
-void Personaje::cambiar_accion_1(string otro){
-	accion_1 = otro;
-}
-
-void Personaje::cambiar_accion_2(string otro){
-	accion_2 = otro;
-}
-
-void Personaje::elegido(){
+void Personaje::asignarSeleccionado(){
 	seleccionado = true;
 }
 
@@ -82,34 +70,10 @@ void Personaje::asignarSimbolo(char s) {
 	simbolo = s;
 }
 
-void Personaje::recibir_ataque(int golpe){
-	if(escudo == 1){
-		golpe = golpe * 0.9;
-	}else if(escudo == 2){
-		golpe = golpe * 0.8;
-	}else if(escudo > 2){
-		golpe = golpe * 0.2;
-	}
-	if(vida > 0)
-		vida -= golpe;
-	if(vida <= 0)
-		vida = 0;
+bool Personaje::obtenerAtacado() {
+	return atacado;
 }
 
-void Personaje::recuperar_vida(){
-	if(vida < 100)
-		vida += 10;
-	else
-		cout << "La vida se encuentra al 100%" << endl;
-
-	if(vida > 100)
-		vida = 100;
-}
-
-void Personaje::cambiar_escudo(int cambio){
-	escudo += cambio;
-}
-
-void Personaje::consumo_energia(int consumo){
-	energia -= consumo;
+void Personaje::asignarAtacado(bool a) {
+	atacado = a;
 }

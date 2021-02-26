@@ -21,35 +21,37 @@ bool Tierra::alimentar() {
 	return true;
 }
 
-int Tierra::atacar(string elemento, int pos_x, int pos_y){
-	int dist_x = abs(posX - pos_x);
-	int dist_y = abs(posY - pos_y);
-	int golpe;
-
-	if(elemento == "Aire")
-		return 10;
-
-	if(dist_x <= 2 && dist_y <= 2)
-		golpe = 30;
-	else if(dist_x <= 4 && dist_y <= 4)
-		golpe = 20;
+void Tierra::atacar(Personaje* p, int rango){
+	int ataque, golpe;
+	if (p->obtenerElemento() == "Aire")
+		ataque = 10;
 	else
-		golpe = 10;
-
-	if(elemento == "Agua")
-		return (golpe + 20);
-
-	return golpe;
+		if (rango <= 2)
+			ataque = 30;
+		else if (rango <= 4)
+			ataque = 20;
+		else
+			ataque = 10;
+	if (p->obtenerElemento() == "Agua")
+		ataque += 20;
+	golpe = (100 - p->obtenerEscudo() * 10) * ataque / 100;
+	p->asignarVida(p->obtenerVida() - golpe);
 }
 
-bool Tierra::defenderse(){
-	if(energia > 5){
-		cout << "Energia: " << energia << " --> ";
-		energia -= 5;
-		cout << energia << '\n';
-		escudo += 2;
-		cout << nombre << " gana +2pts de escudo por un turno" << endl;
-		return true;
-	}
-	return false;
+void Tierra::defender() {
+	if (escudo > 0)
+		escudoAdicional = 8 - escudo;
+	else
+		escudoAdicional = 2;
+	escudo += escudoAdicional;	
+	defenderse = true;
+}
+
+bool Tierra::obtenerDefenderse(){
+	return defenderse;
+}
+
+void Tierra::terminarDefenderse(){
+	escudo -= escudoAdicional;
+	defenderse = false;
 }

@@ -38,9 +38,9 @@ class Tablero {
 		virtual ~Tablero();
 		void mostrar();
 		void aparecerPersonaje(Personaje*, int, int);
-		void moverPersonaje(Personaje*, int, int);
+		bool moverPersonaje(Personaje*, int, int);
 		bool casilleroDisponible(int, int);
-		Casillero* obtener_casillero(int x, int y);
+		Casillero* obtenerCasillero(int x, int y);
 };
 
 #endif

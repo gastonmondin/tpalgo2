@@ -7,12 +7,6 @@
 
 using namespace std;
 
-const string ATACAR		= "atacar";
-const string DEFENDER	= "defender";
-const string ALIMENTAR	= "alimentar";
-const string MOVER		= "mover";
-const string PASAR		= "pasar";
-
 class Menu {
 	// Atributos
 	
@@ -31,7 +25,7 @@ class Menu {
 		void crearPersonaje(string, string, int, int);
 		
 		// POS: Ejecuta la opcion del menu ingresada por el usuario.
-		void elegirOpcion(int);
+		void elegirOpcionMenu(int);
 		
 		// POS: Pide los datos del personaje y luego llama a crear personaje.
 		void nuevoPersonaje();
@@ -49,6 +43,12 @@ class Menu {
 		// y si no puede muestra por pantalla por que.
 		void alimentarPersonaje(Personaje*);
 		
+		void verificarEscudo(Personaje*);
+		
+		void recuperarEnergia(Personaje*);
+		
+		void verificarEnergia(Personaje*);
+		
 		// PRE: El nombre del personaje existe.
 		// POS: Devuelve el objeto del personaje si lo encuentra,
 		// si no informa por pantalla.
@@ -65,122 +65,89 @@ class Menu {
 		void limpiarPantalla();
 
 		// POS: MUESTRA UN NUEVO MENU UNA VEZ SELECCIONADO COMENZAR EL JUEGO.
-		void mostrar_submenu();
+		void mostrarSubmenu();
 
 		// POS: ELEGIRA LA OPCION INDICADA DEL SUBMENU.
-		void elegir_subopcion(int opcion);
+		void elegirOpcionSubmenu(int opcion);
 
 		/*
 		 *VERIFICARA SI EL PERSONAJE SE ENCUENTRA DISPONIBLE PARA SER ELEGIDO, DE ESTAR DISPONIBLE
 		 SERA CARGADO A UN EQUIPO DESIGNADO, CASO CONTRARIO SE NOTIFICARA POR PANTALLA.
 		*/
-		void verificar_disponible(Personaje* p);
+		void verificarDisponible(Personaje* p);
 
-		Dato elegido(string elemento, string nombre, int escudo, int vida, int energia);
+		Personaje* elegido(string elemento, string nombre, int escudo, int vida, int energia);
 
 		// CARGARA EN UN EQUIPO EL PERSONAJE SELECCIONADO.
-		void cargar_equipos(Personaje* p);
+		void cargarEquipos(Personaje* p);
 
 		// VERIFICA QUE SE INGRESE UN PERSONAJE EN EQUIPO 1 O EQUIPO 2.
-		void verificar_equipo(int &equipo);
+		void verificarEquipo(int &equipo);
 		
 		void seleccionarPosicion();
-		
-		void autocompletarEquipo();
-
-		/*
-		 POS: MUESTRA UN MENU PARA CADA PERSONAJE Y SE ELIGIRA LA ACCION QUE REALIZARA CADA UNO.
-		 */
-		bool elegir_accion_1(Dato personaje, int equipo);
-
-		bool elegir_accion_2(Dato personaje, int equipo);
-
-		/*
-		 POS: DETERMINARA LOS LIMILITES EN LOS ATAQUES DE ALGUNOS PERSONAJES
-		 */
-		void calcular_rango(int &ini, int &fin, int pos);
-
-		/*
-		 RETARDO
-		*/
-		void delay(float segs);
-
-		/*
-		 POS: DENTRO DE UN LIMITES ESTABLECIDOS ATACARA A TODOS LOS ENEMIGOS
-		*/
-
-		void ataque_agua(Dato personaje, char enemigo);
-	 	/*
-		POS:REALIZA EL ATAQUE DEL PERSONAJE A LAS COORDENADAS INGRESADAS
-		*/
-		void ataque_aire(Dato personaje, char enemigo, int rivales);
-
-		/*
-		 POS:
-		 */
-		void radar_fuego(Dato personaje, char enemigo);
-
-		/*
-		 POS: DETERMINARA EN RADIO DE IMPACTO DE SU ATAQUE
-		 */
-		bool limites_tierra(int &x_ini, int &x_fin, int &y_ini, int &y_fin);
-
-		/*
-		 POS: DENTRO DE UN LIMITES ESTABLECIDOS ATACARA A TODOS LOS ENEMIGOS
-		 */
-		void radar_tierra(Dato personaje, char enemigo);
-
-		bool atacados(string enemigo, string nombres[]);
-
-		/*
-		 POS: SE EJECUTARAN LOS ATAQUES DE TODOS LOS PERSONAJES QUE TENGAN ESTA ACCION ACTIVA,
-		 */
-		void super_ataques(Dato personaje, string elemento, int energia, char equipo, int rivales);
-
-		/*
-		 POS: VERIFICARA LAS ACCIONES DE CADA PERSONAJE Y LA EJECUTARA.
-		 */
-		void ejecutar_acciones();
-
-		/*
-		 POS: SE EJECUTARA EL JUEGO COMPLETO HASTA QUE TODOS LOS PERSONAJES DE UN EQUIPO QUEDEN
-		 	 CON VIDA IGUAL A 0.
-		 */
-		void comenzar_juego();
-
-		/*
-		 POS: LIMPIA EL TABLERO DE BATALLA.
-		 */
-		void limpiar_tablero();
 
 		/*
 		 POS: MUESTRA INFORMACION DEL PERSONAJE.
 		 */
-		void descripcion(Dato personaje);
-
-		/*
-		 POS: CALCULARA EL IMPACTO DEPENDIENDO DEL TIPO DE ENEMIGO, LUEGO REALIZARA EL ATAQUE.
-		 */
-		void atacar_objetivo(Dato emisor, Dato receptor);
-
-		/*
-		 POS: REALIZARA LAS DEFENZA ESPECIAL DEL PERSONAJE.
-		 */
-		void defensas(Dato personaje, string elemento, int equipo);
-
-		/*
-		 POS: UBICARA A TODOS LOS PERSONAJES EN SUS POSICIONES ESTABLECIDAS.
-		 */
-		void autoposicionar();
+		void mostrarDescripcion(Personaje*);
 		
 		void guardar(ofstream &archivo, Dato personaje);
 
-		void guardar_datos(int grupo);
+		void guardarDatos(int grupo);
 
-		bool reanudar_partida();
+		bool reanudarPartida();
 
-		void retomar_datos(ifstream &archivo);
+		void retomarDatos(ifstream &archivo);
+		
+		void comenzarJuego();
+		
+		int elegirFila();
+		
+		int elegirColumna();
+		
+		int elegirOpcion(Personaje*, int);
+		
+		bool ejecutarPrimeraOpcion(int, Personaje*);
 
+		bool ejecutarSegundaOpcion(int, Personaje*);
+		
+		void ataquePersonaje(Personaje*);
+		
+		void realizarAtaque(Personaje*, Personaje*, int);
+		
+		void verificarEstado(Personaje*);
+		
+		void ataqueAgua(Personaje*);
+		
+		void ataqueAire(Personaje*);
+		
+		void ataqueFuego(Personaje*);
+		
+		void animacionFuego(int, int);
+		
+		int limiteSuperior(int);
+		
+		int limiteInferior(int);
+		
+		void ataqueTierra(Personaje*);
+		
+		void animacionTierra(int, int, int);
+		
+		void refrescarTablero();
+		
+		void defensaPersonaje(Personaje*);
+		
+		void defensaAgua(Personaje*);
+		
+		void defensaAire(Personaje*);
+		
+		void defensaFuego(Personaje*);
+		
+		void defensaTierra(Personaje*);
+		
+		bool gameOver();
+		
+		bool partidaGuardada();
 	public:
 		Menu();
 		

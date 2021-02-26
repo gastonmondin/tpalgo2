@@ -12,21 +12,14 @@ bool Aire::alimentar() {
 	return false;
 }
 
-int Aire::atacar(string elemento){
-	if(elemento == "Fuego")
-		return 10;
-	else if (elemento == "Tierra")
-		return 20;
+void Aire::atacar(Personaje* p){
+	int ataque, golpe;
+	if(p->obtenerElemento() == "Tierra")
+		ataque = 20;
+	else if (p->obtenerElemento() == "Fuego")
+		ataque = 10;
 	else
-		return 15;
-}
-bool Aire::defenderse(){
-	if(energia > 15){
-		cout << "Energia: " << energia << " --> ";
-		energia -= 15;
-		cout << energia << "\n" << nombre << " se puede desplazar sin consumir energia" << endl;
-
-		return true;
-	}
-	return false;
+		ataque = 15;
+	golpe = (100 - p->obtenerEscudo() * 10) * ataque / 100;
+	p->asignarVida(p->obtenerVida() - golpe);
 }

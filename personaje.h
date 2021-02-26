@@ -15,9 +15,8 @@ class Personaje {
 		string nombre;
 		int escudo, posX, posY;
 		bool seleccionado;
-		string accion_1;
-		string accion_2;
 		int vida, energia;
+		bool atacado;
 	private:
 		char simbolo;
 	public:
@@ -30,13 +29,13 @@ class Personaje {
 		
 		//Personaje(Personaje* p);
 
-		virtual string obtenerElemento();
+		virtual string obtenerElemento(){};
 		
 		// POS: Alimenta al personaje o no, dependiendo de si
 		// se dan las condiciones.
-		virtual bool alimentar();
+		virtual bool alimentar(){};
 
-		virtual string obtenerAlimento();
+		virtual string obtenerAlimento(){};
 		
 		string obtenerNombre();
 		
@@ -50,43 +49,41 @@ class Personaje {
 		
 		int obtenerPosY();
 		
+		void asignarVida(int);
+		
+		void asignarEnergia(int);
+		
 		void asignarPos(int, int);
 
 		/*
 		 POS: RETORNA EL ATRIBUTO SELECCIONADO.
 		*/
-		bool obtener_seleccionado();
+		bool obtenerSeleccionado();
 
 		/*
 		 POS: CONVIERTE SELECCIONADO IGUAL A TRUE
 		*/
-		void elegido();
+		void asignarSeleccionado();
 
 		char obtenerSimbolo();
 
 		void asignarSimbolo(char s);
-
-		string obtener_accion_1();
-
-		string obtener_accion_2();
-
-		void cambiar_accion_1(string otro);
-
-		void cambiar_accion_2(string otro);
-
-		virtual int atacar(string elemento){};
-
-		virtual int atacar(string elemento, int pos_x, int pos_y){};
+		
+		bool obtenerAtacado();
+		
+		void asignarAtacado(bool);
+		
+		virtual void atacar(Personaje*){};
+		
+		virtual void atacar(Personaje*, int){};
 
 		virtual bool defenderse(){};
-
-		void cambiar_escudo(int cambio);
-
-		void consumo_energia(int consumo);
-
-		void recuperar_vida();
-
-		void recibir_ataque(int golpe);
+		
+		virtual void defender(){};
+		
+		virtual bool obtenerDefenderse(){};
+		
+		virtual void terminarDefenderse(){};
 
 		virtual ~Personaje(){};
 };

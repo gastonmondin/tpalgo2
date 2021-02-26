@@ -128,14 +128,14 @@ void Tablero::aparecerPersonaje(Personaje* p, int x, int y){
 }
 
 bool Tablero::casilleroDisponible(int x, int y){
-	if (casilleros[y-1][x-1]->obtenerPersonaje() == 0 && casilleros[y-1][x-1]->obtenerTipo() != "Vacio")
+	if (casilleros[y-1][x-1]->obtenerPersonaje() == 0)
 		return true;
 	else
 		return false;
 }
 
-Casillero* Tablero::obtener_casillero(int x, int y){
-	return casilleros[y][x];
+Casillero* Tablero::obtenerCasillero(int x, int y){
+	return casilleros[y-1][x-1];
 }
 
 void Tablero::inicializarMatrizDistancias(string elemento){
@@ -178,13 +178,29 @@ void Tablero::realizarMovimiento(Personaje* p, int i, int j){
 	}
 }
 
-void Tablero::moverPersonaje(Personaje* p, int x, int y) {
+bool Tablero::moverPersonaje(Personaje* p, int x, int y) {
+	bool mover;
 	inicializarMatrizDistancias(p->obtenerElemento());
 	completarDistancias();
 	int fuente = (p->obtenerPosY() - 1) * 8 + p->obtenerPosX() - 1;
 	int destino = (y - 1) * 8 + x - 1;
-    realizarMovimiento(p, fuente, destino);
-    p->asignarPos(x, y);
+	if (p->obtenerEnergia() < distancia[fuente][destino]) {
+		cout << "Energia insuficiente." << endl;
+		sleep(1);
+		mover = false;	
+	} else if (casilleros[y-1][x-1]->obtenerPersonaje() != 0) {
+		cout << "Ya hay un personaje en esa posicion." << endl;
+		sleep(2);
+		mover = false;
+	} else {
+		realizarMovimiento(p, fuente, destino);
+    	p->asignarPos(x, y);
+    	p->asignarEnergia(p->obtenerEnergia() - distancia[fuente][destino]);
+    	cout << p->obtenerNombre() << " gasto " << distancia[fuente][destino] << " de energia." << endl;
+    	mover = true;
+    	sleep(3);
+	}
+    return mover;
 }
 
 Tablero::~Tablero(){
