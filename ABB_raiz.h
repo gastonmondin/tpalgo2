@@ -56,16 +56,23 @@ private:
 	*/
 	void nuevo_hijo(Abb_hoja* &h, string c, Personaje* d);
 
-	string predecesor(Abb_hoja* hoja);
-
+	/*
+	 BUSCARA UNA HOJA PARA REEMPLAZAR Y MANTENER LA ESTRUCTURA DEL ARBOL
+	 */
 	Abb_hoja* busco_predecesor(Abb_hoja* hoja);
 
-	Abb_hoja* obtener_padre(Abb_hoja* &padre, string clave);
-
+	/*
+	 DEVOLVERA LA HOJA PADRE A LA QUE SE DESEA BORRAR.
+	 */
 	Abb_hoja* busco_padre(string clave);
 
-	void eliminar(Abb_hoja* hoja, Abb_hoja* padre, string clave);
-
+	/*
+	 ELIMINA LA HOJA SELECCIONADA
+	 */
+	void eliminar(Abb_hoja* hoja, Abb_hoja* padre);
+	/*
+	 BUSCARA LA CLAVE EN EL ARBOL, SI SE ENCUENTRA BORRARA LA HOJA.
+	 */
 	void borrar_hoja(Abb_hoja* hoja, Abb_hoja* padre, string clave);
 };
 

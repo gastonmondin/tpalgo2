@@ -3,6 +3,7 @@
 #include <string>
 
 Menu::Menu() {
+	exit = false;
 }
 
 void Menu::verificarEquipo(int &equipo){
@@ -68,13 +69,6 @@ void Menu::procesarArchivo() {
 
 Personaje* Menu::buscarPersonaje(string nombre) {
 	return arbol.buscar(nombre);
-
-	/*int pos = listaPersonajes.obtenerPosicion(nombre);
-	if (pos != 0)
-		return listaPersonajes.consulta(pos);
-	else
-		cout << "No se encontro el personaje." << endl;
-		return 0;*/
 }
 
 string Menu::ingresarNombre() {
@@ -111,13 +105,6 @@ void Menu::nuevoPersonaje() {
 	escudo = rand() % 3;
 	vida = rand() % 90 + 10;
 	crearPersonaje(elemento, nombre, escudo, vida);
-}
-
-void Menu::eliminarPersonaje(Personaje* personaje) {
-	int pos;
-	cout << personaje->obtenerNombre() << " fue eliminado con exito." << endl;
-	pos = listaPersonajes.obtenerPosicion(personaje->obtenerNombre());
-	listaPersonajes.baja(pos);
 }
 
 void Menu::mostrarPersonajes() {
@@ -300,8 +287,6 @@ void Menu::elegirOpcionMenu(int opcion) {
 		case 1: nuevoPersonaje();
 			break;
 		case 2: arbol.eliminar_hoja(ingresarNombre());
-			/*personaje = buscarPersonaje(ingresarNombre());
-			if (personaje !=0) eliminarPersonaje(personaje);*/
 			break;
 		case 3: mostrarPersonajes();
 			break;
@@ -656,6 +641,8 @@ int Menu::elegirOpcion(Personaje* p, int o) {
 			cout << "Ingrese una opcion: ";
 		cin >> opcion;
 	} while (opcion < 1 && opcion > 4);
+	if(opcion == 4)
+		exit = true;
 	return opcion;
 }
 
@@ -708,6 +695,7 @@ bool Menu::ejecutarSegundaOpcion(int opcion, Personaje* p){
 		case 2:
 			defensaPersonaje(p);
 			ejecutar = true;
+			break;
 		case 3:
 			ejecutar = true;
 			break;
@@ -734,10 +722,12 @@ bool Menu::gameOver() {
 bool Menu::partidaGuardada() {
 	ifstream archivo;
 	archivo.open("partida.csv");
-	if (archivo)
-		return true;
-	else
+	if(!archivo){
 		return false;
+	}
+
+	archivo.close();
+	return true;
 }
 
 void Menu::comenzarJuego(){
@@ -768,6 +758,10 @@ void Menu::comenzarJuego(){
 	} while(!gameOver() && !partidaGuardada());
 }
 
+bool Menu::juego_cortado(){
+	return exit;
+}
+
 void Menu::mostrarMenu() {
 
 	if(!reanudarPartida()){
@@ -784,10 +778,7 @@ void Menu::mostrarMenu() {
 			cin >> opcion;
 			elegirOpcionMenu(opcion);
 
-			////////////////////////////////////////////////
-			
-			////////////////////////////////////////////////
-		} while (opcion != 6);
+		} while (opcion != 6 && !juego_cortado());
 	} else
 		comenzarJuego();
 	cout << "Fin del juego." << endl;

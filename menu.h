@@ -15,6 +15,7 @@ class Menu {
 		Abb_raiz arbol = Abb_raiz();
 		Lista equipos[2];
 		Tablero tablero = Tablero();
+		bool exit;
 
 	// Metodos
 
@@ -123,6 +124,9 @@ class Menu {
 		
 		void ataqueFuego(Personaje*);
 		
+		/*
+		 MUESTRA POR PANTALLA LA ZONA DE ATAQUE DEL PERSONAJE TIPO FUEGO.
+		 */
 		void animacionFuego(int, int);
 		
 		int limiteSuperior(int);
@@ -131,6 +135,9 @@ class Menu {
 		
 		void ataqueTierra(Personaje*);
 		
+		/*
+		 MUESTRA POR PANTALLA LA ZONA DE ATAQUE DEL PERSONAJE TIPO TIERRA.
+		 */
 		void animacionTierra(int, int, int);
 		
 		void refrescarTablero();
@@ -145,9 +152,18 @@ class Menu {
 		
 		void defensaTierra(Personaje*);
 		
+		/*
+		 SI UN EQUIPO SE QUEDA SIN LUCHADORES SE TERMINA EL JUEGO.
+		 */
 		bool gameOver();
 		
 		bool partidaGuardada();
+
+		/*
+		 SI UN JUGADOR DECIDE DEJAR DE JUGAR SE ACTIVARA LA SALIDA EXIT.
+		 */
+		bool juego_cortado();
+
 	public:
 		Menu();
 		

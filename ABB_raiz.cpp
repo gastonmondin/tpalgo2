@@ -116,7 +116,7 @@ Abb_hoja* Abb_raiz::busco_predecesor(Abb_hoja* hoja){
 	return 0;
 }
 
-void Abb_raiz::eliminar(Abb_hoja* hoja, Abb_hoja* padre, string clave){
+void Abb_raiz::eliminar(Abb_hoja* hoja, Abb_hoja* padre){
 
 	//SIN HIJOS
 	if(hoja->obtener_hoja_izq() == 0 && hoja->obtener_hoja_der() == 0){
@@ -186,13 +186,15 @@ void Abb_raiz::eliminar(Abb_hoja* hoja, Abb_hoja* padre, string clave){
 
 		delete hoja;
 	}
+	cout << "Personaje eliminado correctamente." << endl;
+	sleep(3);
 }
 
 void Abb_raiz::borrar_hoja(Abb_hoja* hoja, Abb_hoja* padre, string clave){
 	if(!hoja){
 		cout << "El personaje no se encuentra." << endl;
 	}else if(clave == hoja->obtener_clave()){
-		eliminar(hoja, padre, clave);
+		eliminar(hoja, padre);
 	}else if(clave < hoja->obtener_clave()){
 		borrar_hoja(hoja->obtener_hoja_izq(), hoja, clave);
 	}else{
@@ -205,7 +207,7 @@ void Abb_raiz::eliminar_hoja(string clave){
 	if(!raiz){
 		cout << "El arbol esta vacio" << endl;
 	}else if(clave == raiz->obtener_clave()){
-		eliminar(raiz, raiz, clave);
+		eliminar(raiz, raiz);
 	}else if(clave < raiz->obtener_clave()){
 		borrar_hoja(raiz->obtener_hoja_izq(), raiz,clave);
 	}else{
